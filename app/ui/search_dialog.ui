@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="windowModality">
+   <enum>Qt::ApplicationModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>342</width>
+    <height>548</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">#background {
+background-color: rgb(39, 50, 56);
+}
+
+.QLineEdit {
+	border: null;
+	color: white;
+	font: 11pt &quot;Segoe UI&quot;;
+background-color: transparent;
+padding: 5;
+}
+
+.QPushButton {
+border: null;
+	color: white;
+	font: 11pt &quot;Segoe UI&quot;;
+background-color: rgb(38, 165, 154);
+padding: 5;
+}
+.QCheckBox {
+	background-color: rgba(255, 255, 255, 0);
+	color: rgb(255, 255, 255);
+	font: 700 9pt &quot;Segoe UI&quot;;
+	padding: 10%;
+	border: null;
+}
+.QCheckBox::indicator{
+width: 0;
+}
+.QPushButton:hover, .QCheckBox:hover {
+background-color: rgb(69, 75, 84);
+}
+
+#search_list {
+background-color: rgb(54, 71, 79);
+font:700 10pt &quot;Segoe UI&quot;;
+border: null;
+}
+
+#search_list:item {
+	
+	color: white;
+	margin: 10%;
+}
+
+#search_list:item:!enabled {
+    color: gray;
+}
+
+.QPushButton::disabled{
+background-color: rgb(69, 75, 84);
+}
+</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QWidget" name="background" native="true">
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
+       <number>9</number>
+      </property>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLineEdit" name="inp_search">
+          <property name="inputMask">
+           <string/>
+          </property>
+          <property name="placeholderText">
+           <string>Поиск</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_add_to_db">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Внести в базу</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QListWidget" name="search_list"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
