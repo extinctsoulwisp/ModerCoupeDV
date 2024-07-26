@@ -14,7 +14,8 @@ from app.model.orm import MaterialData
 pdfmetrics.registerFont(TTFont("OpenSans", 'font/OpenSans.ttf'))
 pdfmetrics.registerFont(TTFont("OpenSansBold", 'font/OpenSans-Bold.ttf'))
 
-col_width = lambda *k: [(A4[0] - data.MARGIN * 2) * k_ for k_ in k]
+col_width = lambda *k, width=(A4[0] - data.MARGIN * 2): [width * k_ for k_ in k]
+P = Paragraph
 
 
 def create_assigment_doc(order: Order, need_scheme: bool):
@@ -29,10 +30,13 @@ def create_assigment_doc(order: Order, need_scheme: bool):
     )
 
     h_l_style = ParagraphStyle('', fontName='OpenSans', fontSize=data.H_FONT_SIZE, leading=data.H_LENDING)
-    h_r_style = ParagraphStyle('', fontName='OpenSansBold', fontSize=data.H_FONT_SIZE, leading=data.H_LENDING, alignment=TA_RIGHT)
+    h_r_style = ParagraphStyle('', fontName='OpenSansBold', fontSize=data.H_FONT_SIZE, leading=data.H_LENDING,
+                               alignment=TA_RIGHT)
 
-    p_default_style = ParagraphStyle('', fontName='OpenSans', fontSize=data.P_FONT_SIZE, spaceAfter=data.SPACE_AFTER, leading=data.P_LENDING)
-    p_bold_style = ParagraphStyle('', fontName='OpenSansBold', fontSize=data.P_FONT_SIZE, spaceAfter=data.SPACE_AFTER, leading=data.P_LENDING)
+    p_default_style = ParagraphStyle('', fontName='OpenSans', fontSize=data.P_FONT_SIZE, spaceAfter=data.SPACE_AFTER,
+                                     leading=data.P_LENDING)
+    p_bold_style = ParagraphStyle('', fontName='OpenSansBold', fontSize=data.P_FONT_SIZE, spaceAfter=data.SPACE_AFTER,
+                                  leading=data.P_LENDING)
 
     fragments = [fragment for door in order.doors for fragment in door.fragments if not fragment.fragment_container]
 
@@ -109,12 +113,13 @@ def create_assigment_doc(order: Order, need_scheme: bool):
             f"{guide}"
             f"Горизонтальный верхний: {horizonts}<br/>"
             f"Горизонтальный нижний: {horizonts}<br/>"
+            f"Ригель {order.rigel.name}: "
+            f"{', '.join(f'{size}-{count}шт.' for size, count in order.grouped_rigels.items())}<br/>"
             f"Вертикальный {'открытый' if order.profile.is_open else 'закрытый'}: {profiles}<br/>"
             f"Ролик верхний: {len(order.doors)}<br/>"
             f"Ролик нижний: {len(order.doors)}<br/>"
             f"Шлегель: {shlegel}<br/>"
-            f"Уплотнитель: {sealant}<br/>"
-            f"Ригель {order.rigel.name}: {', '.join(f'{size}-{count}шт.' for size, count in order.grouped_rigels.items())}",
+            f"Уплотнитель: {sealant}",
             style=p_default_style,
         ),
         Paragraph(
@@ -170,17 +175,42 @@ def create_material_doc(order: Order, is_for_glass: bool, *materials: MaterialDa
     pdf_path = f'documents\\заявка_{int(is_for_glass)}_{order.id}.pdf'
     fragments = order.group_fragments()
 
-    h_style = ParagraphStyle('', fontName='OpenSansBold', fontSize=data.MD_FONT_SIZE, leading=data.MD_LENDING, spaceAfter=data.SPACE_AFTER)
-    tp_style = ParagraphStyle('', fontName='OpenSans', fontSize=data.MD_FONT_SIZE, leading=data.MD_LENDING)
+    h_style = ParagraphStyle('', fontName='OpenSansBold', fontSize=data.MD_FONT_SIZE, leading=data.MD_LENDING,
+                             spaceAfter=data.SPACE_AFTER)
+    tp = ParagraphStyle('', fontName='OpenSansBold', fontSize=data.MD_TABLE_FONT_SIZE, leading=data.MD_TABLE_LENDING)
 
-    t_style = [
+    material_data: list[list] = [['Вид работы', '№', 'Высота', 'Ширина', 'К-во']]
+    material_spans: list[list] = []
+    row = 1
+    for material in materials:
+        for i, ((h, w), (count, n)) in enumerate(fragments[material.name].items()):
+            material_data.append([P(material.name, tp), P(str(n), tp), P(str(h), tp), P(str(w), tp), P(str(count), tp)])
+            if i == 1:
+                material_data[row][0] = ''
+                material_spans.append(['SPAN', (0, row - 1), (0, row)])
+            elif i > 1:
+                material_data[row][0] = ''
+                material_spans[-1][-1] = (0, row)
+            row += 1
+
+    th_style = [
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
         ('FONTNAME', (0, 0), (-1, -1), 'OpenSans'),
         ('FONTSIZE', (0, 0), (-1, -1), data.MD_FONT_SIZE),
         ('LEADING', (0, 0), (-1, -1), data.MD_LENDING),
+    ]
+
+    st_style = [
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('FONTNAME', (0, 0), (-1, -1), 'OpenSans'),
+        ('FONTSIZE', (0, 0), (-1, -1), data.MD_FONT_SIZE),
+        ('LEADING', (0, 0), (-1, -1), data.MD_LENDING),
+        ('TOPPADDING', (0, 0), (-1, -1), 5),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 5),
+        ('LEFTPADDING', (0, 0), (-1, -1), 2),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 2),
         ('GRID', (0, 0), (-1, -1), 0, colors.black),
     ]
-    th_style = t_style[:-1] + [('GRID', (0, 0), (-1, -1), 0, colors.white), ]
 
     SimpleDocTemplate(
         pdf_path,
@@ -201,13 +231,10 @@ def create_material_doc(order: Order, is_for_glass: bool, *materials: MaterialDa
             spaceAfter=data.SPACE_AFTER
         ),
         Table(
-            data=[['№', 'Вид работы', 'Высота', 'Ширина', 'Кол-во'], ] + [
-                [n, Paragraph(material.name, tp_style), h, w, count]
-                for material in materials for (h, w), (count, n) in fragments[material.name].items()
-            ],
-            colWidths=col_width(.06, .6, .12, .12, .1),
+            data=material_data,
+            colWidths=col_width(.5, .07, .18, .18, .07),
             rowHeights=None,
-            style=TableStyle(t_style)
+            style=TableStyle(st_style + material_spans)
         )
     ])
     return pdf_path

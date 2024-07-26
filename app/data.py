@@ -24,3 +24,5 @@ P_LENDING = int(config['document']['высота строки параграфа
 
 MD_FONT_SIZE = int(config['document']['шрифт документа заявки'])
 MD_LENDING = int(config['document']['высота строки документа заявки'])
+MD_TABLE_FONT_SIZE = int(config['document']['шрифт таблицы документа заявки'])
+MD_TABLE_LENDING = int(config['document']['высота строки таблицы документа заявки'])

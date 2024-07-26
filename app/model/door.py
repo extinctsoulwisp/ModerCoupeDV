@@ -29,6 +29,9 @@ class Door:
         return [fragment for fragment in self._fragments
                 if fragment.fragment_container_id and fragment.model.fragment_container_id == fragment_container_id]
 
+    def add_fragment(self, fragment: DoorFragment):
+        self._fragments.append(fragment)
+
     @property
     def number(self):
         return self._model.number
@@ -60,6 +63,14 @@ class Door:
     @property
     def rows_count(self):
         return self._model.rows_count
+
+    @cols_count.setter
+    def cols_count(self, value: int):
+        self._model.cols_count = value
+
+    @rows_count.setter
+    def rows_count(self, value: int):
+        self._model.rows_count = value
 
     @property
     def custom_rows(self):
@@ -223,4 +234,7 @@ class Door:
         self._model.fragments = [fragment.model for fragment in self._fragments]
         self._model.custom_cols = self._custom_cols
         self._model.custom_rows = self._custom_rows
+        return self._model
+    @property
+    def model(self):
         return self._model

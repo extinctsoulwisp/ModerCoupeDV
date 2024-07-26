@@ -15,7 +15,7 @@ class DoorFragmentData(Database.Base):
 
     material_id: Column[Integer] = Column(Integer, ForeignKey("material.id"), nullable=True)
     fragment_container_id: Column[Integer] = Column(Integer, ForeignKey("door_fragment.id"), nullable=True)
-    door_id: Column[Integer] = Column(Integer, ForeignKey("door.id", ondelete='CASCADE'), nullable=False)
+    door_id: Column[Integer] = Column(Integer, ForeignKey("door.id", ondelete='CASCADE'), nullable=True)
 
     material = relationship(MaterialData, lazy='joined')
     fragment_container = relationship("DoorFragmentData", remote_side=[id])

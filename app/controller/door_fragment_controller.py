@@ -31,7 +31,8 @@ class DoorFragmentController:
     @property
     def text(self):
         return (f"№{self._door_fragment.number_in_scheme} {self._door_fragment.material_name}\n"
-                f"{self._door_fragment.visible_height}\nx\n{self._door_fragment.visible_width}")
+                f"{self._door_fragment.visible_height}\nx\n{self._door_fragment.visible_width}\n"
+                f"{self._door_fragment.y, self._door_fragment.x, not self._door_fragment.fragment_container}")
 
     @property
     def _color(self):

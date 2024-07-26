@@ -6,7 +6,7 @@ from PySide6.QtCore import QDate
 from PySide6.QtGui import QRegularExpressionValidator
 from PySide6.QtWidgets import QDialog, QMenu, QListView
 
-from app.model import Order, App, Material
+from app.model import Order, App, Material, DoorFragment
 from app.ui import Ui_OrderTab
 from . import Tab
 from app import Error
@@ -15,7 +15,7 @@ from ..dialogs import DoorDialog, ProfileSearchDialog, CustomerSearchDialog, Rig
 from ..dialogs.color_search_dialog import ColorSearchDialog
 from ..door_controller import DoorController
 from ...model.func import round_size
-from ...model.orm import MaterialData
+from ...model.orm import MaterialData, DoorFragmentData
 
 guide_count_state = [True, False, None]
 
@@ -81,10 +81,11 @@ class OrderTab(Tab):
 
         self._order.additional_materials = self._ui.inp_additional_materials.toPlainText()
 
-    def _add_door_controller(self, door):
+    def _add_door_controller(self, door, pos: int = None):
+        if pos is None:
+            pos = self._ui.scheme_widget.layout().count() - 1
         door_controller = DoorController(door)
-        self._ui.scheme_widget.layout().insertWidget(
-            self._ui.scheme_widget.layout().count() - 1, door_controller.widget)
+        self._ui.scheme_widget.layout().insertWidget(pos, door_controller.widget)
         for fragment_controller in door_controller.fragments:
             door_controller.ui.frame.layout().addWidget(
                 fragment_controller.widget,
@@ -131,13 +132,47 @@ class OrderTab(Tab):
 
     def edit_door(self, door: DoorController):
         door_dialog = DoorDialog(door.door)
+        door_model = door.door
+
         if door_dialog.exec() == QDialog.DialogCode.Accepted:
+            if door.door.rows_count != door_dialog.rows_count or door.door.cols_count != door_dialog.cols_count:
+                door.delete()
+                self._doors.remove(door)
+                del door
+
+                to_remove = []
+                for fragment in door_model.fragments:
+                    fragment.unmerge()
+                    if fragment.x >= door_dialog.cols_count or fragment.y >= door_dialog.rows_count:
+                        to_remove.append(fragment)
+
+                for fragment in to_remove:
+                    door_model.fragments.remove(fragment)
+
+                for i in range(door_dialog.rows_count):
+                    for j in range(door_dialog.cols_count):
+                        if door_model.fragment_at(i, j) is None:
+                            door_model.fragments.append(DoorFragment(
+                                DoorFragmentData(x=j, y=i, x2=j, y2=i),
+                                rigel=self._order.rigel,
+                                profile=self._order.profile
+                            ))
+
+                door_model.cols_count = door_dialog.cols_count
+                door_model.rows_count = door_dialog.rows_count
+
+                self._add_door_controller(door_model, door_model.number + 2)
+
             for i, col_size in enumerate(door_dialog.cols_sizes):
-                door.door.set_column_size(i, col_size)
+                door_model.set_column_size(i, col_size)
+
             for j, row_size in enumerate(door_dialog.rows_sizes):
-                door.door.set_row_size(j, row_size)
-            door.door.set_width(door_dialog.door_width, auto=not door_dialog.door_width)
-            door.door.is_h_main_rigel = door_dialog.is_h_main_rigel
+                door_model.set_row_size(j, row_size)
+
+            door_model.set_width(door_dialog.door_width, auto=not door_dialog.door_width)
+            door_model.is_h_main_rigel = door_dialog.is_h_main_rigel
+
+        self._update_model()
         self._update_scheme()
 
     def _choice_customer(self):
@@ -364,4 +399,7 @@ class OrderTab(Tab):
 
     def create_assigment_doc(self, document=True, scheme=True):
         self._update_scheme()
-        subprocess.call(['start', '', self._order.create_assigment_doc(document, scheme)], shell=True)
+        try:
+            subprocess.call(['start', '', self._order.create_assigment_doc(document, scheme)], shell=True)
+        except Exception as e:
+            error_box(str(e))

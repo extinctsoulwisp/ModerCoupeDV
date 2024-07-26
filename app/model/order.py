@@ -21,6 +21,7 @@ class Order:
             [Door(model, self._profile, self._rigel) for model in self._model.doors],
             key=lambda door: door.number
         )
+        self._deleted_materials: set[MaterialData] = set()
 
     @property
     def id(self):
@@ -160,12 +161,22 @@ class Order:
         return new_door
 
     def delete_door(self, door: Door):
+        for fragment in door.fragments:
+            self._deleted_materials.add(fragment.material)
+
+        print(self._deleted_materials)
+
         self._doors.remove(door)
+        self._model.doors.remove(door.model)
+
         del door
         for i, door in enumerate(self._doors):
             door.number = i
 
     def update(self):
+        if not len(self._doors):
+            return
+
         overlap_count = len(self._doors) - 1 if self._model.overlap_count is None else self._model.overlap_count
         custom_size_doors = [door.width for door in self._doors if not door.is_auto_width]
 
@@ -210,6 +221,7 @@ class Order:
         self._model.profile = self._profile.get_model_to_save()
         self._model.customer = self._customer.get_model_to_save()
         self._model.color = self._color.get_model_to_save()
+
         with Database.Session() as session:
             session.add(self._model)
             session.commit()
@@ -306,12 +318,12 @@ class Order:
 
     @property
     def using_materials(self) -> list[MaterialData]:
-        materials = []
+        materials = set()
         for door in self._doors:
             for fragment in door.fragments:
-                if fragment.material is not None and fragment.material not in materials:
-                    materials.append(fragment.material)
-        return materials
+                if fragment.material is not None:
+                    materials.add(fragment.material)
+        return list(materials.union(self._deleted_materials))
 
     def delete(self):
         with Database.Session() as session:

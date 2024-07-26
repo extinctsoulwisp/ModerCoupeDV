@@ -76,7 +76,7 @@
  [],
  False,
  False,
- 1719927691,
+ 1721961289,
  [('runw.exe',
    'C:\\Users\\semen\\PycharmProjects\\ModerCoupeDV\\venv\\Lib\\site-packages\\PyInstaller\\bootloader\\Windows-64bit-intel\\runw.exe',
    'EXECUTABLE')],

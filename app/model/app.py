@@ -50,7 +50,7 @@ class App:
         }[search_by]
 
         with Database.Session() as session:
-            orders = session.query(OrderPreview).filter(search_by.like(f'%{text}%')).order_by(order_by).limit(limit).all()
+            orders = session.query(OrderPreview).filter(search_by.startswith(text)).order_by(order_by).limit(limit).all()
 
         return orders
 

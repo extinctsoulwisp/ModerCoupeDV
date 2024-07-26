@@ -1,5 +1,7 @@
 import sys
 
+from PySide6.QtGui import QIcon
+
 from app.controller import AppController, error_box
 from app.controller.tabs import OrderTab, SearchTab
 from app.controller.tabs.admin_search_tab import AdminSearchTab
