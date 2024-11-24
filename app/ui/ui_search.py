@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'searchTtuAUd.ui'
+## Form generated from reading UI file 'searchLIhhRt.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.6.0
 ##
@@ -180,6 +180,7 @@ class Ui_SearchTab(object):
         self.table.setHorizontalHeaderItem(4, __qtablewidgetitem4)
         self.table.setObjectName(u"table")
         self.table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.table.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.table.setShowGrid(True)
         self.table.horizontalHeader().setCascadingSectionResizes(False)
         self.table.horizontalHeader().setStretchLastSection(True)

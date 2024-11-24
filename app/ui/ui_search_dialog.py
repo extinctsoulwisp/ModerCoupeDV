@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'search_dialogPsabfF.ui'
+## Form generated from reading UI file 'search_dialoghzgUQo.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.6.0
 ##
@@ -24,7 +24,7 @@ class Ui_Dialog(object):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
         Dialog.setWindowModality(Qt.ApplicationModal)
-        Dialog.resize(342, 548)
+        Dialog.resize(940, 548)
         Dialog.setStyleSheet(u"#background {\n"
 "background-color: rgb(39, 50, 56);\n"
 "}\n"
@@ -96,14 +96,14 @@ class Ui_Dialog(object):
 
         self.horizontalLayout.addWidget(self.inp_search)
 
-
-        self.verticalLayout_2.addLayout(self.horizontalLayout)
-
         self.btn_add_to_db = QPushButton(self.background)
         self.btn_add_to_db.setObjectName(u"btn_add_to_db")
         self.btn_add_to_db.setEnabled(False)
 
-        self.verticalLayout_2.addWidget(self.btn_add_to_db)
+        self.horizontalLayout.addWidget(self.btn_add_to_db)
+
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout)
 
         self.search_list = QListWidget(self.background)
         self.search_list.setObjectName(u"search_list")

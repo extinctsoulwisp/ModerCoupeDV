@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'orderlTwxmp.ui'
+## Form generated from reading UI file 'ordergYHTBB.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.6.0
 ##
@@ -323,12 +323,12 @@ class Ui_OrderTab(object):
 "	padding: 10%;\n"
 "}\n"
 "\n"
-".QSpinBox, .QDateEdit, .QLineEdit, .QTextEdit,  .QCheckBox, #c_guide {\n"
+".QSpinBox, .QDateEdit, .QLineEdit, .QTextEdit,  .QCheckBox, #c_guide, #c_guide_decor{\n"
 "background-color: rgb(54, 71, 79);\n"
 "border: null;\n"
-"padding: 5%;\n"
-"border-col"
-                        "or: rgb(200, 200, 200);\n"
+"padding: 5%;"
+                        "\n"
+"border-color: rgb(200, 200, 200);\n"
 "color: rgb(200, 200, 200);\n"
 "}\n"
 "    \n"
@@ -373,8 +373,8 @@ class Ui_OrderTab(object):
 "QMenu::itemQComboBox QAbstractItemView{\n"
 "color: white;\n"
 "            padding: 5px 20px;\n"
-"            background-c"
-                        "olor: rgb(39, 50, 56);\n"
+"         "
+                        "   background-color: rgb(39, 50, 56);\n"
 "            }\n"
 "QComboBox QAbstractItemView:selected {\n"
 "             background-color: rgb(69, 75, 84);\n"
@@ -384,7 +384,7 @@ class Ui_OrderTab(object):
         self.right_pannel.setWidgetResizable(True)
         self.right_pannel_content = QWidget()
         self.right_pannel_content.setObjectName(u"right_pannel_content")
-        self.right_pannel_content.setGeometry(QRect(0, 0, 290, 998))
+        self.right_pannel_content.setGeometry(QRect(0, 0, 290, 1082))
         self.verticalLayout_4 = QVBoxLayout(self.right_pannel_content)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
@@ -547,6 +547,38 @@ class Ui_OrderTab(object):
 
         self.formLayout.setWidget(6, QFormLayout.FieldRole, self.inp_overlap_count)
 
+        self.discription_6 = QLabel(self.right_pannel_content)
+        self.discription_6.setObjectName(u"discription_6")
+        self.discription_6.setAlignment(Qt.AlignCenter)
+
+        self.formLayout.setWidget(7, QFormLayout.LabelRole, self.discription_6)
+
+        self.ch_need_shlegel = QCheckBox(self.right_pannel_content)
+        self.ch_need_shlegel.setObjectName(u"ch_need_shlegel")
+        self.ch_need_shlegel.setChecked(True)
+        self.ch_need_shlegel.setTristate(False)
+
+        self.formLayout.setWidget(7, QFormLayout.FieldRole, self.ch_need_shlegel)
+
+        self.discription_11 = QLabel(self.right_pannel_content)
+        self.discription_11.setObjectName(u"discription_11")
+        self.discription_11.setAlignment(Qt.AlignCenter)
+
+        self.formLayout.setWidget(8, QFormLayout.LabelRole, self.discription_11)
+
+        self.c_bot_system = QCheckBox(self.right_pannel_content)
+        self.c_bot_system.setObjectName(u"c_bot_system")
+        self.c_bot_system.setChecked(False)
+        self.c_bot_system.setTristate(False)
+
+        self.formLayout.setWidget(8, QFormLayout.FieldRole, self.c_bot_system)
+
+        self.discription_12 = QLabel(self.right_pannel_content)
+        self.discription_12.setObjectName(u"discription_12")
+        self.discription_12.setAlignment(Qt.AlignCenter)
+
+        self.formLayout.setWidget(9, QFormLayout.LabelRole, self.discription_12)
+
         self.c_guide = QComboBox(self.right_pannel_content)
         self.c_guide.addItem("")
         self.c_guide.addItem("")
@@ -558,26 +590,25 @@ class Ui_OrderTab(object):
         self.c_guide.setDuplicatesEnabled(False)
         self.c_guide.setFrame(False)
 
-        self.formLayout.setWidget(7, QFormLayout.FieldRole, self.c_guide)
+        self.formLayout.setWidget(9, QFormLayout.FieldRole, self.c_guide)
 
-        self.discription_7 = QLabel(self.right_pannel_content)
-        self.discription_7.setObjectName(u"discription_7")
-        self.discription_7.setAlignment(Qt.AlignCenter)
+        self.lbl_guide_decor = QLabel(self.right_pannel_content)
+        self.lbl_guide_decor.setObjectName(u"lbl_guide_decor")
+        self.lbl_guide_decor.setAlignment(Qt.AlignCenter)
 
-        self.formLayout.setWidget(7, QFormLayout.LabelRole, self.discription_7)
+        self.formLayout.setWidget(10, QFormLayout.LabelRole, self.lbl_guide_decor)
 
-        self.discription_6 = QLabel(self.right_pannel_content)
-        self.discription_6.setObjectName(u"discription_6")
-        self.discription_6.setAlignment(Qt.AlignCenter)
+        self.c_guide_decor = QSpinBox(self.right_pannel_content)
+        self.c_guide_decor.setObjectName(u"c_guide_decor")
+        sizePolicy3.setHeightForWidth(self.c_guide_decor.sizePolicy().hasHeightForWidth())
+        self.c_guide_decor.setSizePolicy(sizePolicy3)
+        self.c_guide_decor.setFocusPolicy(Qt.ClickFocus)
+        self.c_guide_decor.setButtonSymbols(QAbstractSpinBox.NoButtons)
+        self.c_guide_decor.setMinimum(0)
+        self.c_guide_decor.setMaximum(10)
+        self.c_guide_decor.setValue(2)
 
-        self.formLayout.setWidget(8, QFormLayout.LabelRole, self.discription_6)
-
-        self.ch_need_shlegel = QCheckBox(self.right_pannel_content)
-        self.ch_need_shlegel.setObjectName(u"ch_need_shlegel")
-        self.ch_need_shlegel.setChecked(True)
-        self.ch_need_shlegel.setTristate(False)
-
-        self.formLayout.setWidget(8, QFormLayout.FieldRole, self.ch_need_shlegel)
+        self.formLayout.setWidget(10, QFormLayout.FieldRole, self.c_guide_decor)
 
 
         self.verticalLayout_4.addLayout(self.formLayout)
@@ -763,13 +794,17 @@ class Ui_OrderTab(object):
         self.dateout.setText(QCoreApplication.translate("OrderTab", u"\u0414\u0410\u0422\u0410 \u0413\u041e\u0422.", None))
         self.discription_10.setText(QCoreApplication.translate("OrderTab", u"\u041f\u0415\u0420\u0415\u0425\u041b\u0415\u0421\u0422", None))
         self.inp_overlap_count.setPlaceholderText(QCoreApplication.translate("OrderTab", u"\u0421\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0439", None))
+        self.discription_6.setText(QCoreApplication.translate("OrderTab", u"\u0428\u041b\u0415\u0413\u0415\u041b\u042c", None))
+        self.ch_need_shlegel.setText(QCoreApplication.translate("OrderTab", u"\u041d\u0443\u0436\u0435\u043d", None))
+        self.discription_11.setText(QCoreApplication.translate("OrderTab", u"\u0421\u0418\u0421\u0422\u0415\u041c\u0410", None))
+        self.c_bot_system.setText(QCoreApplication.translate("OrderTab", u"\u0412\u0435\u0440\u0445\u043d\u044f\u044f \u043f\u043e\u0434\u0432\u0435\u0441\u043d\u0430\u044f", None))
+        self.discription_12.setText(QCoreApplication.translate("OrderTab", u"\u041d\u0410\u041f\u0420\u0410\u0412\u041b.", None))
         self.c_guide.setItemText(0, QCoreApplication.translate("OrderTab", u"2 \u043f\u043e\u043b\u043e\u0441\u044b", None))
         self.c_guide.setItemText(1, QCoreApplication.translate("OrderTab", u"1 \u043f\u043e\u043b\u043e\u0441\u0430", None))
         self.c_guide.setItemText(2, QCoreApplication.translate("OrderTab", u"\u0411\u0435\u0437 \u043d\u0430\u043f\u0440\u0430\u0432\u043b\u044f\u044e\u0449\u0438\u0445", None))
 
-        self.discription_7.setText(QCoreApplication.translate("OrderTab", u"\u041d\u0410\u041f\u0420\u0410\u0412\u041b.", None))
-        self.discription_6.setText(QCoreApplication.translate("OrderTab", u"\u0428\u041b\u0415\u0413\u0415\u041b\u042c", None))
-        self.ch_need_shlegel.setText(QCoreApplication.translate("OrderTab", u"\u041d\u0443\u0436\u0435\u043d", None))
+        self.lbl_guide_decor.setText(QCoreApplication.translate("OrderTab", u"\u041d\u0410\u041a\u041b\u0410\u0414\u041a.", None))
+        self.c_guide_decor.setSuffix("")
         self.discription.setText(QCoreApplication.translate("OrderTab", u"\u041e\u041f\u0418\u0421\u0410\u041d\u0418\u0415", None))
         self.color_2.setText(QCoreApplication.translate("OrderTab", u"\u0426\u0412\u0415\u0422", None))
         self.btn_color.setText(QCoreApplication.translate("OrderTab", u"\u041d\u0430\u0436\u043c\u0438\u0442\u0435, \u0447\u0442\u043e\u0431\u044b \u0432\u044b\u0431\u0440\u0430\u0442\u044c", None))

@@ -160,16 +160,19 @@ class Order:
         self._doors.append(new_door)
         return new_door
 
+    @property
+    def quide_decor(self):
+        return self._model.quide_decor
+
     def delete_door(self, door: Door):
         for fragment in door.fragments:
-            self._deleted_materials.add(fragment.material)
+            if fragment.material:
+                self._deleted_materials.add(fragment.material)
 
-        print(self._deleted_materials)
-
+        if door.model in self._model.doors:
+            self._model.doors.remove(door.model)
         self._doors.remove(door)
-        self._model.doors.remove(door.model)
 
-        del door
         for i, door in enumerate(self._doors):
             door.number = i
 
@@ -344,3 +347,7 @@ class Order:
 
         return create_material_doc(
             self, is_for_glass, *(m for m in self.using_materials if m.is_have_sealant == is_for_glass))
+
+    @quide_decor.setter
+    def quide_decor(self, value):
+        self._model.quide_decor = value

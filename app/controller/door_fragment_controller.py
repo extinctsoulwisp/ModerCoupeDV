@@ -11,7 +11,6 @@ class DoorFragmentController:
         self._is_selected: bool = False
 
     def update(self):
-        print(self._widget.isVisible(), 123)
         self._widget.setVisible(not self._door_fragment.fragment_container)
         self._widget.setText(self.text)
         self._widget.setToolTip(self.text)
@@ -31,8 +30,7 @@ class DoorFragmentController:
     @property
     def text(self):
         return (f"№{self._door_fragment.number_in_scheme} {self._door_fragment.material_name}\n"
-                f"{self._door_fragment.visible_height}\nx\n{self._door_fragment.visible_width}\n"
-                f"{self._door_fragment.y, self._door_fragment.x, not self._door_fragment.fragment_container}")
+                f"{self._door_fragment.visible_height}\nx\n{self._door_fragment.visible_width}")
 
     @property
     def _color(self):

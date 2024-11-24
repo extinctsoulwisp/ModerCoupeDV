@@ -219,6 +219,9 @@ color: black;
        <property name="editTriggers">
         <set>QAbstractItemView::NoEditTriggers</set>
        </property>
+       <property name="selectionBehavior">
+        <enum>QAbstractItemView::SelectRows</enum>
+       </property>
        <property name="showGrid">
         <bool>true</bool>
        </property>

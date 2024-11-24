@@ -10,7 +10,7 @@ from app.model import Order, App, Material, DoorFragment
 from app.ui import Ui_OrderTab
 from . import Tab
 from app import Error
-from .. import error_box, confirm_decorator, response_decorator
+from .. import error_box, confirm_decorator, response_decorator, confirm_box
 from ..dialogs import DoorDialog, ProfileSearchDialog, CustomerSearchDialog, RigelSearchDialog, MaterialSearchDialog
 from ..dialogs.color_search_dialog import ColorSearchDialog
 from ..door_controller import DoorController
@@ -32,9 +32,18 @@ class OrderTab(Tab):
 
         self._selected_door_fragment: DoorFragmentController or None = None
         self._selected_material: Material = Material(MaterialData())
+        self._rigel_is_not_changed = True
 
         self._setup()
         self._update_view()
+
+    def rename_tab(self, new_name: str):
+        self.list_item.setText(new_name)
+
+    def change_system(self, state: bool):
+        self._ui.c_bot_system.setText("Нижняя опорная" if state else "Верхняя подвесная")
+        self._ui.lbl_guide_decor.setVisible(not state)
+        self._ui.c_guide_decor.setVisible(not state)
 
     def _setup(self):
         self._ui.btn_exit.clicked.connect(lambda *_: self._ui_app.close_tab(self))
@@ -52,6 +61,7 @@ class OrderTab(Tab):
         self._ui.ch_need_shlegel.toggled.connect(
             lambda: self._ui.ch_need_shlegel.setText("Нужен" if self._ui.ch_need_shlegel.isChecked() else "Не нужен")
         )
+        self._ui.c_bot_system.stateChanged.connect(self.change_system)
         self._ui.c_set_config.setView(QListView())
         self._ui.c_delivery_config.setView(QListView())
         self._ui.c_pack_config.setView(QListView())
@@ -77,9 +87,12 @@ class OrderTab(Tab):
         self._order.delivery_config_id = self._ui.c_delivery_config.currentIndex() + 1
 
         self._order.part_number = v if (v := self._ui.inp_order_number_part.value()) else None
-        print('prt', self._order.part_number)
 
         self._order.additional_materials = self._ui.inp_additional_materials.toPlainText()
+        if self._ui.c_bot_system.isChecked():
+            self._order.quide_decor = None
+        else:
+            self._order.quide_decor = self._ui.c_guide_decor.value()
 
     def _add_door_controller(self, door, pos: int = None):
         if pos is None:
@@ -101,6 +114,12 @@ class OrderTab(Tab):
 
     def _add_door(self):
         self._update_model()
+
+        if self._rigel_is_not_changed:
+            if confirm_box(f"'{self._order.rigel.name}' - правильно выбран ригель?"):
+                self._rigel_is_not_changed = False
+            else:
+                return
 
         door_dialog = DoorDialog()
         if door_dialog.exec() == QDialog.DialogCode.Accepted:
@@ -258,8 +277,11 @@ class OrderTab(Tab):
         self._ui.c_delivery_config.setCurrentIndex(self._order.delivery_config_id - 1)
 
         self._ui.inp_additional_materials.setText(self._order.additional_materials)
-        print('ow', self._order.part_number)
         self._ui.inp_order_number_part.setValue(0 if (v := self._order.part_number) is None else v)
+
+        self._ui.c_bot_system.setChecked(self._order.quide_decor is None)
+        if self._order.quide_decor is not None:
+            self._ui.c_guide_decor.setValue(self._order.quide_decor)
 
     def _update_scheme(self):
         self._update_model()
@@ -306,6 +328,8 @@ class OrderTab(Tab):
             self.edit_door(self._door_by_fragment(fragment))
 
         elif self._ui.r_double.isChecked():
+            for fragment_ in self._door_by_fragment(fragment).fragments:
+                fragment_.door_fragment.unmerge()
             self.double_door(self._door_by_fragment(fragment))
 
         elif self._ui.r_merge.isChecked():

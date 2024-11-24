@@ -543,7 +543,7 @@ width: 0;
 	padding: 10%;
 }
 
-.QSpinBox, .QDateEdit, .QLineEdit, .QTextEdit,  .QCheckBox, #c_guide {
+.QSpinBox, .QDateEdit, .QLineEdit, .QTextEdit,  .QCheckBox, #c_guide, #c_guide_decor{
 background-color: rgb(54, 71, 79);
 border: null;
 padding: 5%;
@@ -613,7 +613,7 @@ QComboBox QAbstractItemView:selected {
            <x>0</x>
            <y>0</y>
            <width>290</width>
-           <height>998</height>
+           <height>1082</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -916,7 +916,63 @@ QComboBox QAbstractItemView:selected {
               </property>
              </widget>
             </item>
+            <item row="7" column="0">
+             <widget class="QLabel" name="discription_6">
+              <property name="text">
+               <string>ШЛЕГЕЛЬ</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
             <item row="7" column="1">
+             <widget class="QCheckBox" name="ch_need_shlegel">
+              <property name="text">
+               <string>Нужен</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+              <property name="tristate">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="8" column="0">
+             <widget class="QLabel" name="discription_11">
+              <property name="text">
+               <string>СИСТЕМА</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="8" column="1">
+             <widget class="QCheckBox" name="c_bot_system">
+              <property name="text">
+               <string>Верхняя подвесная</string>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+              <property name="tristate">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="9" column="0">
+             <widget class="QLabel" name="discription_12">
+              <property name="text">
+               <string>НАПРАВЛ.</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="9" column="1">
              <widget class="QComboBox" name="c_guide">
               <property name="focusPolicy">
                <enum>Qt::NoFocus</enum>
@@ -950,36 +1006,41 @@ QComboBox QAbstractItemView:selected {
               </item>
              </widget>
             </item>
-            <item row="7" column="0">
-             <widget class="QLabel" name="discription_7">
+            <item row="10" column="0">
+             <widget class="QLabel" name="lbl_guide_decor">
               <property name="text">
-               <string>НАПРАВЛ.</string>
+               <string>НАКЛАДК.</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
               </property>
              </widget>
             </item>
-            <item row="8" column="0">
-             <widget class="QLabel" name="discription_6">
-              <property name="text">
-               <string>ШЛЕГЕЛЬ</string>
+            <item row="10" column="1">
+             <widget class="QSpinBox" name="c_guide_decor">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
               </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
+              <property name="focusPolicy">
+               <enum>Qt::ClickFocus</enum>
               </property>
-             </widget>
-            </item>
-            <item row="8" column="1">
-             <widget class="QCheckBox" name="ch_need_shlegel">
-              <property name="text">
-               <string>Нужен</string>
+              <property name="buttonSymbols">
+               <enum>QAbstractSpinBox::NoButtons</enum>
               </property>
-              <property name="checked">
-               <bool>true</bool>
+              <property name="suffix">
+               <string/>
               </property>
-              <property name="tristate">
-               <bool>false</bool>
+              <property name="minimum">
+               <number>0</number>
+              </property>
+              <property name="maximum">
+               <number>10</number>
+              </property>
+              <property name="value">
+               <number>2</number>
               </property>
              </widget>
             </item>

@@ -46,8 +46,13 @@ class AppController:
 
         cur_tab.widget.setVisible(True)
         self._ui.tabs.setCurrentItem(cur_tab.list_item)
+
+        from app.controller.tabs import OrderTab
         if isinstance(cur_tab, SearchTab):
             cur_tab.update_orders_list()
+
+        elif isinstance(cur_tab, OrderTab):
+            cur_tab.list_item.setText(str(cur_tab.order.visible_number))
 
     @confirm_decorator("Закрыть вкладку? Несохраненные изменения будут утеряны.")
     def close_tab(self, cur_tab: Tab):

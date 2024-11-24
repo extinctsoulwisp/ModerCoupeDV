@@ -158,11 +158,13 @@ class Door:
                     vertical.append((j, i - 1, i, False))
 
         main, sub = (horizontal, sorted(vertical)) if self._model.is_h_main_rigel else (sorted(vertical), horizontal)
+        print(main, sub)
 
         last_rigel = None
         for i, rigel in enumerate(main):
             if last_rigel is None:
                 last_rigel = rigel
+                i == len(main) - 1 and main_sizes.append(count_size(*rigel))
             elif last_rigel[0] == rigel[0] and last_rigel[2] == rigel[1]:
                 last_rigel = (last_rigel[0], last_rigel[1], rigel[2], rigel[3])
                 i == len(main) - 1 and main_sizes.append(count_size(*last_rigel))
@@ -175,6 +177,7 @@ class Door:
         for i, rigel in enumerate(sub):
             if last_rigel is None:
                 last_rigel = rigel
+                i == len(sub) - 1 and sub_sizes.append(count_size(*rigel))
             elif (last_rigel[0] == rigel[0] and last_rigel[2] == rigel[1] and
                     not any(map(lambda r: (last_rigel[1] < r[0] < rigel[2]) and (r[1] < rigel[0] < r[2]), main_sizes))):
                 last_rigel = (last_rigel[0], last_rigel[1], rigel[2], rigel[3])

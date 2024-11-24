@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>342</width>
+    <width>940</width>
     <height>548</height>
    </rect>
   </property>
@@ -129,17 +129,17 @@ background-color: rgb(69, 75, 84);
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="QPushButton" name="btn_add_to_db">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Внести в базу</string>
+          </property>
+         </widget>
+        </item>
        </layout>
-      </item>
-      <item>
-       <widget class="QPushButton" name="btn_add_to_db">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="text">
-         <string>Внести в базу</string>
-        </property>
-       </widget>
       </item>
       <item>
        <widget class="QListWidget" name="search_list"/>

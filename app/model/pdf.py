@@ -39,11 +39,20 @@ def create_assigment_doc(order: Order, need_scheme: bool):
                                   leading=data.P_LENDING)
 
     fragments = [fragment for door in order.doors for fragment in door.fragments if not fragment.fragment_container]
-
     if order.is_2_line is not None:
-        guide = (f"Верхняя {(lc := 'двуполозная' if order.is_2_line else 'однополозная')}"
-                 f" направляющая: {(gl := order.guide_long if order.guide_long else order.doorway_width)}<br/>"
-                 f"Нижняя {lc} направляющая: {gl}<br/>")
+        if order.quide_decor is not None:
+            guide = (
+                f"Верхний ходовой: {(gl := order.guide_long if order.guide_long else order.doorway_width)}"
+                f"-{2 if order.is_2_line else 1}шт.<br/>"
+            )
+            if order.quide_decor:
+                guide += f"Накладка на направляющую: {gl}-{order.quide_decor}шт.<br/>"
+        else:
+            guide = (
+                f"Верхняя {(lc := 'двуполозная' if order.is_2_line else 'однополозная')}"
+                f" направляющая: {(gl := order.guide_long if order.guide_long else order.doorway_width)}<br/>"
+                f"Нижняя {lc} направляющая: {gl}<br/>"
+            )
     else:
         guide = ''
 
@@ -178,6 +187,7 @@ def create_material_doc(order: Order, is_for_glass: bool, *materials: MaterialDa
     h_style = ParagraphStyle('', fontName='OpenSansBold', fontSize=data.MD_FONT_SIZE, leading=data.MD_LENDING,
                              spaceAfter=data.SPACE_AFTER)
     tp = ParagraphStyle('', fontName='OpenSansBold', fontSize=data.MD_TABLE_FONT_SIZE, leading=data.MD_TABLE_LENDING)
+    p = ParagraphStyle('', fontName='OpenSans', fontSize=data.MD_FONT_SIZE, leading=data.MD_LENDING)
 
     material_data: list[list] = [['Вид работы', '№', 'Высота', 'Ширина', 'К-во']]
     material_spans: list[list] = []
@@ -223,8 +233,8 @@ def create_material_doc(order: Order, is_for_glass: bool, *materials: MaterialDa
         Paragraph(f"Заявка №{order.visible_number} - {order.set_config_name}", h_style),
         Table(
             data=[
-                [f"Отвественный: {order.responsible.name}", f"Покупатель: {order.customer.name}"],
-                [f"Тел: {order.responsible.phone}", f"Дата готовности: {order.out_date}"]
+                [P(f"Отвественный: {order.responsible.name}", p), P(f"Покупатель: {order.customer.name}", p)],
+                [P(f"Тел: {order.responsible.phone}", p), P(f"Дата готовности: {order.out_date}", p)]
             ],
             colWidths=col_width(.5, .5),
             style=TableStyle(th_style),
