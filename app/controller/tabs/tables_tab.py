@@ -1,14 +1,16 @@
 from PySide6.QtCore import Qt
+from PySide6.QtGui import QCursor
 from PySide6.QtWidgets import QLabel, QSizePolicy, QMenu
 
 from app.controller import response_decorator, clear_layout, error_box
 from app.controller.list_items import SearchListItem, InstanceListItem
 from app.controller.sql_table_controller import SQLTableController, NumSqlTableItem, StrSqlTableItem, BoolSqlTableItem, \
-    NoEditTableItem
+    NoEditTableItem, OneCSqlTableItem
 from app.controller.tabs import Tab
 from app.model import AdminApp
 from app.model.orm import UserData, ProfileData, RigelData, MaterialData, Database, ColorData, CustomerModel, \
-    RigelColorModel, RigelColor1cModel
+    RigelColorModel, RigelColor1cModel, ProfileColorModel
+from app.model.orm.color_link_data import ProfileColor1cModel
 from app.ui import Ui_TablesTabNew
 
 
@@ -20,8 +22,19 @@ class DataTab(Tab):
 
         self._ui = Ui_TablesTabNew()
         self.db_session: Database.Session = Database.Session()
-        self.cur_controller = None
+        self.cur_controller: SQLTableController | None = None
         self._setup()
+
+    def clear_tabs(self):
+        self._ui.lst_rigel_names.clear()
+        self._ui.tbl_rigel_params.clear()
+        self._ui.lst_rigel_colors.clear()
+        self._ui.tbl_rigel_1c.clear()
+
+        self._ui.lst_profile_names.clear()
+        self._ui.tbl_profile_params.clear()
+        self._ui.lst_profile_colors.clear()
+        self._ui.tbl_profile_1c.clear()
 
     def _setup(self):
         self._ui.setupUi(self._widget)
@@ -34,27 +47,9 @@ class DataTab(Tab):
                                SQLTableController.SQLTableColumn("number", "Номер (Уникальный)", NumSqlTableItem),
                                SQLTableController.SQLTableColumn("password", "Пароль (Уникальный)", StrSqlTableItem),
                                SQLTableController.SQLTableColumn("phone", "Телефон", StrSqlTableItem),
-                               SQLTableController.SQLTableColumn("name", "Имя", StrSqlTableItem),)
+                               SQLTableController.SQLTableColumn("name", "Имя", StrSqlTableItem), )
         ))
-        self._ui.btn_profile.clicked.connect(lambda: self.update_table(
-            SQLTableController(self._ui.table,
-                               "Профиль",
-                               ProfileData,
-                               ProfileData.id,
-                               SQLTableController.SQLTableColumn("overlap", "Перехлест", NumSqlTableItem),
-                               SQLTableController.SQLTableColumn("guide", "Направляющая", NumSqlTableItem),
-                               SQLTableController.SQLTableColumn("sealant", "Уплотнитель", NumSqlTableItem),
-                               SQLTableController.SQLTableColumn("shlegel", "Шлегель", NumSqlTableItem),
-                               SQLTableController.SQLTableColumn("is_open", "Открытый?", BoolSqlTableItem),
-                               SQLTableController.SQLTableColumn("v_width", "Ширина В.", NumSqlTableItem),
-                               SQLTableController.SQLTableColumn("v_depth", "Грубина В.", NumSqlTableItem),
-                               SQLTableController.SQLTableColumn("h_top_width", "Высота Г.В.", NumSqlTableItem),
-                               SQLTableController.SQLTableColumn("h_bot_width", "Высота Г.Н.", NumSqlTableItem),
-                               SQLTableController.SQLTableColumn("h_top_depth", "Глубина Г.В.", NumSqlTableItem),
-                               SQLTableController.SQLTableColumn("h_bot_depth", "Глубина Г.Н.", NumSqlTableItem),
-                               SQLTableController.SQLTableColumn("name", "Название", StrSqlTableItem),
-                               )
-        ))
+        self._ui.btn_profile.clicked.connect(self.open_profile_menu)
         self._ui.btn_rigel.clicked.connect(self.open_rigel_menu)
         self._ui.btn_material.clicked.connect(lambda: self.update_table(
             SQLTableController(self._ui.table,
@@ -62,29 +57,60 @@ class DataTab(Tab):
                                MaterialData,
                                MaterialData.id,
                                SQLTableController.SQLTableColumn("is_have_sealant", "Уплотнитель?", BoolSqlTableItem),
-                               SQLTableController.SQLTableColumn("name", "Название", StrSqlTableItem),)
+                               SQLTableController.SQLTableColumn("name", "Название", StrSqlTableItem), )
         ))
         self._ui.btn_color.clicked.connect(lambda: self.update_table(
             SQLTableController(self._ui.table,
                                "Цвет",
                                ColorData,
                                ColorData.id,
-                               SQLTableController.SQLTableColumn("name", "Наименование", StrSqlTableItem),)
+                               SQLTableController.SQLTableColumn("name", "Наименование", StrSqlTableItem), )
         ))
         self._ui.btn_customer.clicked.connect(lambda: self.update_table(
             SQLTableController(self._ui.table,
                                "Клиент",
                                CustomerModel,
                                CustomerModel.id,
-                               SQLTableController.SQLTableColumn("name", "Имя клиента", StrSqlTableItem),)
+                               SQLTableController.SQLTableColumn("name", "Имя клиента", StrSqlTableItem), )
         ))
 
         self._ui.btn_save.clicked.connect(self.save)
         self._ui.table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self._ui.table.customContextMenuRequested.connect(self.show_table_context_menu)
+        self._ui.lst_rigel_names.customContextMenuRequested.connect(self.show_table_context_menu)
+        self._ui.lst_profile_names.customContextMenuRequested.connect(self.show_table_context_menu)
+        self._ui.tabWidget.currentChanged.connect(self.clear_tabs)
 
-        self._ui.lst_rigel_names.itemClicked.connect(self.open_rigel_instance)
+        self._ui.tbl_rigel_params.setRowCount(3)
+        self._ui.tbl_rigel_1c.setRowCount(1)
+        self._ui.tbl_profile_params.setRowCount(13)
+        self._ui.tbl_profile_1c.setRowCount(13)
+
+        self._ui.lst_rigel_names.itemSelectionChanged.connect(
+            lambda *_: self.open_rigel_instance(self._ui.lst_rigel_names.currentItem())
+        )
         self._ui.lst_rigel_colors.itemChanged.connect(self.rigel_color_select)
+        self._ui.lst_rigel_colors.itemSelectionChanged.connect(
+            lambda *_: self.open_rigel_color_instance(self._ui.lst_rigel_colors.currentItem())
+        )
+        self._ui.tbl_rigel_1c.itemDoubleClicked.connect(lambda i: i.item_double_clicked())
+
+        self._ui.lst_profile_names.itemSelectionChanged.connect(
+            lambda *_: self.open_profile_instance(self._ui.lst_profile_names.currentItem())
+        )
+        self._ui.lst_profile_colors.itemChanged.connect(self.profile_color_select)
+        self._ui.lst_profile_colors.itemSelectionChanged.connect(
+            lambda *_: self.open_profile_color_instance(self._ui.lst_profile_colors.currentItem())
+        )
+        self._ui.tbl_profile_1c.itemDoubleClicked.connect(lambda i: i.item_double_clicked())
+
+    def get_filters(self, model):
+        if self._ui.r_actual.isChecked():
+            return [model.on_delete == False]
+        elif self._ui.r_deleted.isChecked():
+            return [model.on_delete == True]
+        else:
+            return []
 
     def update_table(self, controller: SQLTableController):
         self._ui.tabWidget.setCurrentIndex(2)
@@ -92,37 +118,41 @@ class DataTab(Tab):
         self.db_session.close()
         self.db_session = Database.Session()
 
-        if self._ui.r_actual.isChecked():
-            filters = [controller.model.on_delete == False]
-        elif self._ui.r_deleted.isChecked():
-            filters = [controller.model.on_delete == True]
-        else:
-            filters = []
+        controller.enable((self.db_session.query(controller.model)), *self.get_filters(controller.model))
 
-        controller.enable((self.db_session.query(controller.model)), *filters)
+    def open_rigel_menu(self, *, reopen_session=True):
+        if reopen_session:
+            self.db_session.close()
+            self.db_session = Database.Session()
 
-    def open_rigel_menu(self):
         self.cur_controller = None
-        self.db_session.close()
-        self.db_session = Database.Session()
         self._ui.tabWidget.setCurrentIndex(1)
+        self.clear_tabs()
 
-        self._ui.lst_rigel_names.clear()
-        self._ui.tbl_rigel_params.clear()
-        self._ui.tbl_rigel_params.setRowCount(2)
-        self._ui.lst_rigel_colors.clear()
-        self._ui.tbl_rigel_1c.clear()
-        self._ui.tbl_rigel_1c.setRowCount(1)
+        for (id_, name, on_delete) in (
+                self.db_session.query(RigelData.id, RigelData.name, RigelData.on_delete)
+                        .filter(*self.get_filters(RigelData))
+                        .order_by(RigelData.id.desc())
+                        .all()
 
-        for (id_, name) in self.db_session.query(RigelData.id, RigelData.name).order_by(RigelData.id.desc()).all():
-            self._ui.lst_rigel_names.addItem(SearchListItem((id_, name)))
+        ):
+            self._ui.lst_rigel_names.addItem(item := SearchListItem((id_, name)))
+            if on_delete:
+                font = item.font()
+                font.setStrikeOut(True)
+                item.setFont(font)
 
-        for color_data in self.db_session.query(ColorData).order_by(ColorData.id.desc()).all():
+        for color_data in (self.db_session.query(ColorData)
+                                .filter(*self.get_filters(ColorData)).order_by(ColorData.id.desc()).all()):
             # noinspection PyTypeChecker
             self._ui.lst_rigel_colors.addItem(
                 item := InstanceListItem(color_data, f"<{color_data.id}> {color_data.name}")
             )
             item.setCheckState(Qt.CheckState.Unchecked)
+            if color_data.on_delete:
+                font = item.font()
+                font.setStrikeOut(True)
+                item.setFont(font)
 
     def open_rigel_instance(self, rigel_item: SearchListItem):
         self._ui.lst_rigel_colors.setCurrentItem(None)
@@ -134,9 +164,9 @@ class DataTab(Tab):
         i = 0
         for color_id, in (
                 self.db_session.query(RigelColorModel.color_id)
-                .filter(RigelColorModel.rigel_id == rigel_item.id)
-                .order_by(RigelColorModel.color_id.desc())
-                .all()
+                        .filter(RigelColorModel.rigel_id == rigel_item.id)
+                        .order_by(RigelColorModel.color_id.desc())
+                        .all()
         ):
             while self._ui.lst_rigel_colors.item(i).instance.id > color_id:
                 i += 1
@@ -148,6 +178,7 @@ class DataTab(Tab):
         # noinspection PyTypeChecker
         instance: RigelData = self.db_session.query(RigelData).filter(RigelData.id == rigel_item.id).one()
         params = [
+            (NoEditTableItem('Наименование'), StrSqlTableItem(instance, 'name')),
             (NoEditTableItem('Середина'), NumSqlTableItem(instance, 'center_width')),
             (NoEditTableItem('Глубина'), NumSqlTableItem(instance, 'depth')),
         ]
@@ -173,31 +204,171 @@ class DataTab(Tab):
 
         # noinspection PyTypeChecker
         if (instance := (
-            self.db_session.query(RigelColor1cModel)
-            .filter(
-                RigelColor1cModel.rigel_id == rigel.id,
-            ).one()
+                self.db_session.query(RigelColor1cModel)
+                        .filter(
+                    RigelColor1cModel.rigel_id == rigel.id,
+                ).first()
         )) is None:
             self.db_session.add(instance := RigelColor1cModel(rigel_id=rigel.id, color_id=color_item.instance.id))
 
         params = [
-            (NoEditTableItem('Ригель'), NumSqlTableItem(instance, 'center_width')),
+            (NoEditTableItem('Ригель'), OneCSqlTableItem(instance, 'one_c_id', 'Номенклатура')),
         ]
         for i, row in enumerate(params):
             for j, item in enumerate(row):
-                self._ui.tbl_rigel_params.setItem(i, j, item)
+                self._ui.tbl_rigel_1c.setItem(i, j, item)
+
+    def open_profile_menu(self, *, reopen_session=True):
+        if reopen_session:
+            self.db_session.close()
+            self.db_session = Database.Session()
+
+        self.cur_controller = None
+        self._ui.tabWidget.setCurrentIndex(0)
+        self.clear_tabs()
+
+        for (id_, name, on_delete) in (
+                self.db_session.query(ProfileData.id, ProfileData.name, ProfileData.on_delete)
+                        .filter(*self.get_filters(ProfileData))
+                        .order_by(ProfileData.id.desc())
+                        .all()
+
+        ):
+            self._ui.lst_profile_names.addItem(item := SearchListItem((id_, name)))
+            if on_delete:
+                font = item.font()
+                font.setStrikeOut(True)
+                item.setFont(font)
+
+        for color_data in (self.db_session.query(ColorData)
+                                .filter(*self.get_filters(ColorData)).order_by(ColorData.id.desc()).all()):
+            # noinspection PyTypeChecker
+            self._ui.lst_profile_colors.addItem(
+                item := InstanceListItem(color_data, f"<{color_data.id}> {color_data.name}")
+            )
+            item.setCheckState(Qt.CheckState.Unchecked)
+            if color_data.on_delete:
+                font = item.font()
+                font.setStrikeOut(True)
+                item.setFont(font)
+
+    def open_profile_instance(self, profile_item: SearchListItem):
+        self._ui.lst_profile_colors.setCurrentItem(None)
+        self._ui.tbl_profile_1c.clear()
+
+        for i in range(self._ui.lst_profile_colors.count()):
+            self._ui.lst_profile_colors.item(i).setCheckState(Qt.CheckState.Unchecked)
+
+        i = 0
+        for color_id, in (
+                self.db_session.query(ProfileColorModel.color_id)
+                        .filter(ProfileColorModel.profile_id == profile_item.id)
+                        .order_by(ProfileColorModel.color_id.desc())
+                        .all()
+        ):
+            while self._ui.lst_profile_colors.item(i).instance.id > color_id:
+                i += 1
+
+            color_item: SearchListItem = self._ui.lst_profile_colors.item(i)
+            color_item.setCheckState(Qt.CheckState.Checked)
+            i += 1
+
+        # noinspection PyTypeChecker
+        instance: ProfileData = self.db_session.query(ProfileData).filter(ProfileData.id == profile_item.id).one()
+        params = [
+            (NoEditTableItem('Наименование'), StrSqlTableItem(instance, 'name')),
+            (NoEditTableItem('Перехлест'), NumSqlTableItem(instance, 'overlap')),
+            (NoEditTableItem('Направляющая'), NumSqlTableItem(instance, 'guide')),
+            (NoEditTableItem('Уплотнитель'), NumSqlTableItem(instance, 'sealant')),
+            (NoEditTableItem('Шлегель'), NumSqlTableItem(instance, 'shlegel')),
+            (NoEditTableItem('Открытый?'), NumSqlTableItem(instance, 'is_open')),
+            (NoEditTableItem('Ширина В.'), NumSqlTableItem(instance, 'v_width')),
+            (NoEditTableItem('Глубина В.'), NumSqlTableItem(instance, 'v_depth')),
+            (NoEditTableItem('Высота Г.В.'), NumSqlTableItem(instance, 'h_top_width')),
+            (NoEditTableItem('Высота Г.Н.'), NumSqlTableItem(instance, 'h_bot_width')),
+            (NoEditTableItem('Глубина Г.В.'), NumSqlTableItem(instance, 'h_top_depth')),
+            (NoEditTableItem('Глубина Г.Н.'), NumSqlTableItem(instance, 'h_bot_depth')),
+        ]
+        for i, row in enumerate(params):
+            for j, item in enumerate(row):
+                self._ui.tbl_profile_params.setItem(i, j, item)
+
+    def profile_color_select(self, item: InstanceListItem):
+        if (cur_item := self._ui.lst_profile_names.currentItem()) is None:
+            return
+
+        instance = self.db_session.query(ProfileData).filter(ProfileData.id == cur_item.id).one()
+        if item.checkState() == Qt.CheckState.Checked:
+            self.db_session.merge(ProfileColorModel(profile_id=instance.id, color_id=item.instance.id))
+        else:
+            self.db_session.delete(ProfileColorModel(profile_id=instance.id, color_id=item.instance.id))
+
+    def open_profile_color_instance(self, color_item: InstanceListItem):
+        if (cur_item := self._ui.lst_profile_names.currentItem()) is None:
+            return
+
+        profile = self.db_session.query(ProfileData).filter(ProfileData.id == cur_item.id).one()
+
+        # noinspection PyTypeChecker
+        if (instance := (
+                self.db_session.query(ProfileColor1cModel)
+                        .filter(
+                    ProfileColor1cModel.profile_id == profile.id,
+                ).first()
+        )) is None:
+            self.db_session.add(instance := ProfileColor1cModel(profile_id=profile.id, color_id=color_item.instance.id))
+
+        params = [
+            (NoEditTableItem('Верхняя Н. 2П'), OneCSqlTableItem(instance, 'top_guide_2', 'Номенклатура')),
+            (NoEditTableItem('Нижняя Н. 2П'), OneCSqlTableItem(instance, 'bottom_guide_2', 'Номенклатура')),
+            (NoEditTableItem('Верхняя Н. 1П'), OneCSqlTableItem(instance, 'top_guide_1', 'Номенклатура')),
+            (NoEditTableItem('Нижняя Н. 1П'), OneCSqlTableItem(instance, 'bottom_guide_1', 'Номенклатура')),
+            (NoEditTableItem('Ходовой'), OneCSqlTableItem(instance, 'top_movable_guide', 'Номенклатура')),
+            (NoEditTableItem('Накладка'), OneCSqlTableItem(instance, 'decorative_guide', 'Номенклатура')),
+            (NoEditTableItem('Заглушка'), OneCSqlTableItem(instance, 'plug', 'Номенклатура')),
+            (NoEditTableItem('Верхний Г.'), OneCSqlTableItem(instance, 'top_horizontal', 'Номенклатура')),
+            (NoEditTableItem('Нижний Г.'), OneCSqlTableItem(instance, 'bottom_horizontal', 'Номенклатура')),
+            (NoEditTableItem('Вертикальный'), OneCSqlTableItem(instance, 'vertical', 'Номенклатура')),
+            (NoEditTableItem('Уплотнитель'), OneCSqlTableItem(instance, 'sealant', 'Номенклатура')),
+            (NoEditTableItem('Шлегель'), OneCSqlTableItem(instance, 'shlegel', 'Номенклатура')),
+            (NoEditTableItem('Ролики'), OneCSqlTableItem(instance, 'wheels', 'Номенклатура')),
+        ]
+        for i, row in enumerate(params):
+            for j, item in enumerate(row):
+                self._ui.tbl_profile_1c.setItem(i, j, item)
+
+    def current_model(self):
+        if self.cur_controller is not None:
+            print("-" * 20, self.cur_controller)
+            return self.cur_controller.model()
+        else:
+            print("-" * 20, self._ui.tabWidget.currentIndex())
+            return [ProfileData, RigelData, None][self._ui.tabWidget.currentIndex()]()
 
     def add_row(self):
-        self.db_session.add(self.cur_controller.model())
-        self.cur_controller.enable()
+        print("-" * 20, self.current_model())
+        self.db_session.add(self.current_model())
+        self.update()
 
-    def show_table_context_menu(self, pos):
+    def current_instance(self):
+        match self._ui.tabWidget.currentIndex():
+            case 2:
+                return self._ui.table.selectedItems()[0].instance
+            case 1:
+                return self.db_session.query(RigelData).filter(
+                    RigelData.id == self._ui.lst_rigel_names.currentItem().id).one()
+            case 0:
+                return self.db_session.query(ProfileData).filter(
+                    ProfileData.id == self._ui.lst_profile_names.currentItem().id).one()
+
+    def show_table_context_menu(self, _):
         menu = QMenu(self._widget)
-        instance = self._ui.table.selectedItems()[0].instance
+        instance = self.current_instance()
         (menu.addAction("Восстановить" if instance.on_delete else "На удаление")).triggered.connect(
             lambda *, i=instance: self.delete_or_restore(i)
         )
-        menu.exec(self._ui.table.mapToGlobal(pos))
+        (menu.addAction("Добавить")).triggered.connect(self.add_row)
+        menu.exec(QCursor().pos())
 
     @response_decorator
     def save(self):
@@ -214,4 +385,14 @@ class DataTab(Tab):
     def delete_or_restore(self, i):
         i.on_delete = not i.on_delete
         self.save()
-        self.cur_controller.enable()
+        self.update()
+
+    def update(self):
+        if self.cur_controller is not None:
+            self.cur_controller.enable(None, *self.get_filters(self.cur_controller.model))
+
+        elif self._ui.tabWidget.currentIndex() == 1:
+            self.open_rigel_menu(reopen_session=False)
+
+        elif self._ui.tabWidget.currentIndex() == 2:
+            pass

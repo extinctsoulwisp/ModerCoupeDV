@@ -38,12 +38,12 @@ class SearchTab(Tab):
         else:
             search_by = 'customer'
 
-        for order in self._app.search_orders(
+        for order in reversed(self._app.search_orders(
                 text=self._ui.inp_search.text(),
                 search_by=search_by,
-                _asc=self._ui.r_asc.isChecked(),
+                _asc=not self._ui.r_asc.isChecked(),
                 limit=self._ui.inp_limit.value()
-        ):
+        )):
             order: OrderPreview
             self._ui.table.insertRow(0)
             self._ui.table.setItem(0, 0, OrderTableItem(str(order.date), order.id))

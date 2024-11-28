@@ -7,7 +7,7 @@ from PySide6.QtGui import QCursor, QColor
 from PySide6.QtWidgets import QTableWidget, QTableWidgetItem, QMenu
 from sqlalchemy import Column, func, String
 
-from app.controller import error_box, input_box
+from app.controller import error_box, input_box, info_box
 from app.model.decryptor import password_decrypt, password_encrypt
 from app.model.orm import Database
 
@@ -17,6 +17,9 @@ class NoEditTableItem(QTableWidgetItem):
         super().__init__(text)
         self.setFlags(Qt.ItemFlag.ItemIsEnabled | Qt.ItemFlag.ItemIsSelectable)
 
+    def item_double_clicked(self):
+        pass
+
 
 class SqlTableItem(QTableWidgetItem):
     def __init__(self, instance: Database.Base, attr: str, type_in: Callable = str):
@@ -25,7 +28,7 @@ class SqlTableItem(QTableWidgetItem):
         self.instance = instance
         self.attr = attr
 
-        if instance.on_delete:
+        if hasattr(instance, 'on_delete') and instance.on_delete:
             self.setBackground(QColor(231, 99, 68, 100))
 
     def item_double_clicked(self):
@@ -160,14 +163,13 @@ class EncryptedSqlTableItem(SqlTableItem):
 
 
 class OneCSqlTableItem(SqlTableItem):
-    def __init__(self, instance: Database.Base, attr: str, one_c_name: str):
-        super().__init__(instance, attr, type_in=str)
+    def __init__(self, instance: Database.Base, attr: str, one_c_art: str):
+        super().__init__(instance, attr, type_in=self.load_name)
         self.setFlags(Qt.ItemFlag.ItemIsEnabled | Qt.ItemFlag.ItemIsSelectable)
-        self.one_c_name: str = one_c_name
+        self.one_c_art: str = one_c_art
 
-    def load_name(self):
-        pass
-
+    def load_name(self, value: str) -> str:
+        return "Не найдено"
 
     def setData(self, role, value):
         if role == Qt.EditRole:
@@ -175,16 +177,11 @@ class OneCSqlTableItem(SqlTableItem):
                 self.instance[self.attr] = value
             except Exception as e:
                 error_box(str(e))
-        super().setData(role, "*" * 8)
+        super().setData(role, self.load_name(value))
 
     def item_double_clicked(self):
-        if result := input_box("Старый пароль", "Новый пароль", password_type=True):
-            old_password, new_password = result
-        else:
-            return
-        decrypted_old = password_decrypt(self.instance[self.attr], old_password.encode())
-        encrypted_new = password_encrypt(decrypted_old, new_password.encode())
-        self.setData(Qt.EditRole, encrypted_new)
+        info_box('...1c')
+        self.setData(Qt.EditRole, 'id-000')
 
 
 class SQLTableController:
