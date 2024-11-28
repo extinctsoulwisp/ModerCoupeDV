@@ -82,7 +82,7 @@ class Order:
 
     @property
     def door_count(self):
-        return self._model.door_count
+        return len(self._doors)
 
     @property
     def doorway_height(self):
@@ -347,6 +347,11 @@ class Order:
 
         return create_material_doc(
             self, is_for_glass, *(m for m in self.using_materials if m.is_have_sealant == is_for_glass))
+
+    def create_customer_doc(self):
+        from app.model.pdf import create_customer_doc
+
+        return create_customer_doc(self)
 
     @quide_decor.setter
     def quide_decor(self, value):

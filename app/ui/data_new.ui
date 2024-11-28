@@ -1,0 +1,1106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>tables_tab</class>
+ <widget class="QWidget" name="tables_tab">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1099</width>
+    <height>657</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">#top_widget {
+background-color: rgb(54, 71, 79);
+}
+#header {
+background-color: rgb(200, 200, 200);
+}
+
+.QRadioButton, .QPushButton {
+	color: rgb(255, 255, 255);
+	font: 700 9pt &quot;Segoe UI&quot;;
+	border: null;
+	padding: 10%;
+}
+
+.QTableWidget, .QListWidget {
+background-color: rgb(241, 244, 249);
+}
+
+.QRadioButton:hover, .QPushButton:hover{
+background-color: rgb(69, 75, 84);
+}
+
+#rigth_widget {
+	background-color: rgb(39, 50, 56);
+}
+
+.QLabel {
+	font: 700 9pt &quot;Segoe UI&quot;;
+	padding: 10%;
+}
+
+.QTableWidget &gt; .QHeaderView::section {
+    background-color: rgb(239, 243, 246);
+	color: rgb(86, 96, 113);
+border: 0;
+border-bottom: 1px solid rgb(203, 206, 208);
+}
+.QTableWidget &gt; .QTableCornerButton::section{ 
+    background-color: transparent;
+
+}
+.QTableWidget {
+outline: 0;
+}
+.QTableWidget::item:selected {
+	background-color: rgb(184, 236, 230);
+color: black;
+}
+
+.QListWidget {
+outline: 0;
+}
+.QListWidget::item {
+padding: 5%;
+border-bottom: 1px solid rgb(203, 206, 208);
+}
+
+.QListWidget::item:selected {
+	background-color: rgb(184, 236, 230);
+	color: black;
+}
+
+
+
+.QRadioButton, .QPushButton {
+	background-color: rgba(255, 255, 255, 0);
+	color: rgb(255, 255, 255);
+	font: 700 9pt &quot;Segoe UI&quot;;
+	padding: 10%;
+	border: null;
+}
+
+.QComboBox {
+	background-color: #36474f;
+	color: rgb(255, 255, 255);
+	font: 700 9pt &quot;Segoe UI&quot;;
+	padding: 10%;
+	border: null;
+}
+
+.QRadioButton:hover, .QPushButton:hover{
+background-color: rgb(69, 75, 84);
+}
+
+.QRadioButton:checked{
+background-color: rgb(38, 165, 154);
+}
+
+.QRadioButton::indicator, .QCheckBox::indicator{
+width: 0;
+}
+
+.QLabel {
+	color: rgb(136, 139, 145);
+	font: 700 9pt &quot;Segoe UI&quot;;
+	padding: 10%;
+}
+
+.QSpinBox, .QDateEdit, .QLineEdit, .QTextEdit {
+background-color: rgb(54, 71, 79);
+border: null;
+padding: 5%;
+border-color: rgb(200, 200, 200);
+color: rgb(200, 200, 200);
+}
+    
+    QScrollBar:vertical {
+        background-color: rgb(39, 50, 56);
+        width: 10px;
+        margin: 0px;
+    }
+    
+    QScrollBar::handle:vertical {
+        background-color: #c0c0c0;
+        min-height: 20px;
+    }
+    
+    QScrollBar::add-line:vertical,
+    QScrollBar::sub-line:vertical {
+        background: none;
+    }
+    
+    QScrollBar::add-page:vertical,
+    QScrollBar::sub-page:vertical {
+        background: none;
+    }
+
+#r_custom_overlap:checked +#i_overlap_count {
+background-color: rgb(38, 165, 154);
+}
+
+
+#r_custom_overlap:hover +#i_overlap_count {
+background-color: rgb(38, 165, 154);
+}
+
+.QGroupBox {
+border: null;
+}
+
+.QComboBox::drop-down {
+width: 0;
+}
+
+QMenu::itemQComboBox QAbstractItemView{
+color: white;
+            padding: 5px 20px;
+            background-color: rgb(39, 50, 56);
+            }
+QComboBox QAbstractItemView:selected {
+             background-color: rgb(69, 75, 84);
+            }
+
+
+#bg {
+	background-color: rgb(241, 244, 249);
+
+}
+.QTabWidget &gt; .QTabBar::tab {
+    height: 0;
+}
+
+.QTabWidget {
+    outline: 0;
+}
+
+#profile_tab, #rigel_tab {
+background-color: rgb(241, 244, 249);
+}
+
+#ch_is_open, #tabWidget .QPushButton {
+	color: black;
+	font: 700 9pt &quot;Segoe UI&quot;;
+}</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <item row="0" column="0">
+    <widget class="QWidget" name="top_widget" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QPushButton" name="btn_save">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Сохранить</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>icons/disk.svg</normaloff>icons/disk.svg</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Expanding</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>19</width>
+          <height>30</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_load_from_1c">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Загрузить из 1С</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>icons/download.svg</normaloff>icons/download.svg</iconset>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="1" rowspan="3">
+    <widget class="QWidget" name="rigth_widget" native="true">
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>СИСТЕМЫ</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_profile">
+        <property name="text">
+         <string>Профиль</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_rigel">
+        <property name="text">
+         <string>Ригель</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_14">
+        <property name="text">
+         <string>ТАБЛИЦЫ</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_user">
+        <property name="text">
+         <string>Пользователь</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_material">
+        <property name="text">
+         <string>Материал</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_color">
+        <property name="text">
+         <string>Цвет</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_customer">
+        <property name="text">
+         <string>Клиент</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>ПОКАЗАТЬ</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="groupBox">
+        <property name="title">
+         <string/>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QRadioButton" name="r_actual">
+           <property name="text">
+            <string>Актуальные</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="r_deleted">
+           <property name="text">
+            <string>Удаленные</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="r_all">
+           <property name="text">
+            <string>Все</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>2</number>
+     </property>
+     <property name="documentMode">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="profile_tab">
+      <attribute name="title">
+       <string>Tab 1</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <property name="leftMargin">
+        <number>30</number>
+       </property>
+       <property name="topMargin">
+        <number>30</number>
+       </property>
+       <property name="rightMargin">
+        <number>30</number>
+       </property>
+       <property name="bottomMargin">
+        <number>30</number>
+       </property>
+       <property name="horizontalSpacing">
+        <number>30</number>
+       </property>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>ПРОФИЛЬ</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QTableWidget" name="tbl_profile_params">
+         <property name="selectionMode">
+          <enum>QAbstractItemView::NoSelection</enum>
+         </property>
+         <property name="showGrid">
+          <bool>true</bool>
+         </property>
+         <attribute name="horizontalHeaderVisible">
+          <bool>false</bool>
+         </attribute>
+         <attribute name="horizontalHeaderStretchLastSection">
+          <bool>true</bool>
+         </attribute>
+         <attribute name="verticalHeaderVisible">
+          <bool>false</bool>
+         </attribute>
+         <row/>
+         <row>
+          <property name="text">
+           <string>Новая строка</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Новая строка</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Новая строка</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Новая строка</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Новая строка</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Новая строка</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Новая строка</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Новая строка</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Новая строка</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Новая строка</string>
+          </property>
+         </row>
+         <column>
+          <property name="text">
+           <string>Новый столбец</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Новый столбец</string>
+          </property>
+         </column>
+         <item row="0" column="0">
+          <property name="text">
+           <string>Перехлест</string>
+          </property>
+         </item>
+         <item row="1" column="0">
+          <property name="text">
+           <string>Направляющая</string>
+          </property>
+         </item>
+         <item row="2" column="0">
+          <property name="text">
+           <string>Уплотнитель</string>
+          </property>
+         </item>
+         <item row="3" column="0">
+          <property name="text">
+           <string>Шлегель</string>
+          </property>
+         </item>
+         <item row="4" column="0">
+          <property name="text">
+           <string>Тип</string>
+          </property>
+         </item>
+         <item row="5" column="0">
+          <property name="text">
+           <string>Ширина В.</string>
+          </property>
+         </item>
+         <item row="6" column="0">
+          <property name="text">
+           <string>Глубина В.</string>
+          </property>
+         </item>
+         <item row="7" column="0">
+          <property name="text">
+           <string>Высота Г.В.</string>
+          </property>
+         </item>
+         <item row="8" column="0">
+          <property name="text">
+           <string>Высота Г.Н.</string>
+          </property>
+         </item>
+         <item row="9" column="0">
+          <property name="text">
+           <string>Глубина Г.В.</string>
+          </property>
+         </item>
+         <item row="10" column="0">
+          <property name="text">
+           <string>Глубина Г.Н.</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QListWidget" name="lst_profile_names">
+         <property name="contextMenuPolicy">
+          <enum>Qt::CustomContextMenu</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="3">
+        <widget class="QLabel" name="label_6">
+         <property name="text">
+          <string>СВЯЗЬ С 1С</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="3">
+        <widget class="QTableWidget" name="tbl_profile_1c">
+         <property name="selectionMode">
+          <enum>QAbstractItemView::NoSelection</enum>
+         </property>
+         <property name="showGrid">
+          <bool>true</bool>
+         </property>
+         <attribute name="horizontalHeaderVisible">
+          <bool>false</bool>
+         </attribute>
+         <attribute name="horizontalHeaderStretchLastSection">
+          <bool>true</bool>
+         </attribute>
+         <attribute name="verticalHeaderVisible">
+          <bool>false</bool>
+         </attribute>
+         <row>
+          <property name="text">
+           <string>Новая строка</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Новая строка</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Новая строка</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Новая строка</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Новая строка</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Новая строка</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Новая строка</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Новая строка</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Новая строка</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Новая строка</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Новая строка</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Новая строка</string>
+          </property>
+         </row>
+         <row/>
+         <column>
+          <property name="text">
+           <string>Новый столбец</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Новый столбец</string>
+          </property>
+         </column>
+         <item row="0" column="0">
+          <property name="text">
+           <string>Верхняя Н. 2П</string>
+          </property>
+         </item>
+         <item row="1" column="0">
+          <property name="text">
+           <string>Нижняя Н. 2П</string>
+          </property>
+         </item>
+         <item row="2" column="0">
+          <property name="text">
+           <string>Верхняя Н. 1П</string>
+          </property>
+         </item>
+         <item row="3" column="0">
+          <property name="text">
+           <string>Нижняя Н. 1П</string>
+          </property>
+         </item>
+         <item row="4" column="0">
+          <property name="text">
+           <string>Ходовой</string>
+          </property>
+         </item>
+         <item row="5" column="0">
+          <property name="text">
+           <string>Накладка</string>
+          </property>
+         </item>
+         <item row="6" column="0">
+          <property name="text">
+           <string>Заглушка</string>
+          </property>
+         </item>
+         <item row="7" column="0">
+          <property name="text">
+           <string>Верхний Г.</string>
+          </property>
+         </item>
+         <item row="8" column="0">
+          <property name="text">
+           <string>Нижний Г.</string>
+          </property>
+         </item>
+         <item row="9" column="0">
+          <property name="text">
+           <string>Вертикальный</string>
+          </property>
+         </item>
+         <item row="10" column="0">
+          <property name="text">
+           <string>Уплотнитель</string>
+          </property>
+         </item>
+         <item row="11" column="0">
+          <property name="text">
+           <string>Шлегель</string>
+          </property>
+         </item>
+         <item row="12" column="0">
+          <property name="text">
+           <string>Ролики</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>ПАРАМЕТРЫ</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>ЦВЕТ</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QListWidget" name="lst_profile_colors"/>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="rigel_tab">
+      <property name="contextMenuPolicy">
+       <enum>Qt::CustomContextMenu</enum>
+      </property>
+      <attribute name="title">
+       <string>Страница</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_3">
+       <property name="leftMargin">
+        <number>30</number>
+       </property>
+       <property name="topMargin">
+        <number>30</number>
+       </property>
+       <property name="rightMargin">
+        <number>30</number>
+       </property>
+       <property name="bottomMargin">
+        <number>30</number>
+       </property>
+       <property name="horizontalSpacing">
+        <number>30</number>
+       </property>
+       <property name="verticalSpacing">
+        <number>6</number>
+       </property>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_10">
+         <property name="text">
+          <string>РИГЕЛЬ</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLabel" name="label_7">
+         <property name="text">
+          <string>ПАРАМЕТРЫ</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QLabel" name="label_9">
+         <property name="text">
+          <string>ЦВЕТ</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="3">
+        <widget class="QLabel" name="label_8">
+         <property name="text">
+          <string>СВЯЗЬ С 1С</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QListWidget" name="lst_rigel_names">
+         <property name="contextMenuPolicy">
+          <enum>Qt::CustomContextMenu</enum>
+         </property>
+         <item>
+          <property name="text">
+           <string>Новый элемент</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Новый элемент</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Новый элемент</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Новый элемент</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QTableWidget" name="tbl_rigel_params">
+         <property name="selectionBehavior">
+          <enum>QAbstractItemView::SelectRows</enum>
+         </property>
+         <property name="showGrid">
+          <bool>true</bool>
+         </property>
+         <attribute name="horizontalHeaderVisible">
+          <bool>false</bool>
+         </attribute>
+         <attribute name="horizontalHeaderStretchLastSection">
+          <bool>true</bool>
+         </attribute>
+         <attribute name="verticalHeaderVisible">
+          <bool>false</bool>
+         </attribute>
+         <row>
+          <property name="text">
+           <string>Новая строка</string>
+          </property>
+         </row>
+         <row/>
+         <column>
+          <property name="text">
+           <string>Новый столбец</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Новый столбец</string>
+          </property>
+         </column>
+         <item row="0" column="0">
+          <property name="text">
+           <string>Середина</string>
+          </property>
+         </item>
+         <item row="1" column="0">
+          <property name="text">
+           <string>Глубина</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QListWidget" name="lst_rigel_colors">
+         <item>
+          <property name="text">
+           <string>Новый элемент</string>
+          </property>
+          <property name="checkState">
+           <enum>Checked</enum>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Новый элемент</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Новый элемент</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Новый элемент</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Новый элемент</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Новый элемент</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Новый элемент</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Новый элемент</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Новый элемент</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Новый элемент</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Новый элемент</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Новый элемент</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Новый элемент</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Новый элемент</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Новый элемент</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Новый элемент</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Новый элемент</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Новый элемент</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="1" column="3">
+        <widget class="QTableWidget" name="tbl_rigel_1c">
+         <property name="selectionBehavior">
+          <enum>QAbstractItemView::SelectRows</enum>
+         </property>
+         <property name="showGrid">
+          <bool>true</bool>
+         </property>
+         <attribute name="horizontalHeaderVisible">
+          <bool>false</bool>
+         </attribute>
+         <attribute name="horizontalHeaderStretchLastSection">
+          <bool>true</bool>
+         </attribute>
+         <attribute name="verticalHeaderVisible">
+          <bool>false</bool>
+         </attribute>
+         <row/>
+         <column>
+          <property name="text">
+           <string>Новый столбец</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Новый столбец</string>
+          </property>
+         </column>
+         <item row="0" column="0">
+          <property name="text">
+           <string>Ригель</string>
+          </property>
+         </item>
+         <item row="0" column="1">
+          <property name="text">
+           <string/>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="table_tab">
+      <attribute name="title">
+       <string>Страница</string>
+      </attribute>
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QTableWidget" name="table">
+         <property name="selectionMode">
+          <enum>QAbstractItemView::SingleSelection</enum>
+         </property>
+         <attribute name="horizontalHeaderStretchLastSection">
+          <bool>true</bool>
+         </attribute>
+         <attribute name="verticalHeaderVisible">
+          <bool>false</bool>
+         </attribute>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

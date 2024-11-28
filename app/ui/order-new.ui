@@ -1,0 +1,2017 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>OrderTab</class>
+ <widget class="QWidget" name="OrderTab">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1118</width>
+    <height>708</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">#rigth_widget {
+	background-color: rgb(39, 50, 56);
+}
+
+#top_widget {
+background-color: rgb(54, 71, 79);
+}
+
+#bottom_widget {
+background-color: rgb(54, 71, 79);
+}
+
+#scheme_widget {
+	background-color: rgb(241, 244, 249);
+}
+
+.QGroupBox {
+border: null;
+}
+
+.QRadioButton, .QPushButton {
+	color: rgb(255, 255, 255);
+	font: 700 9pt &quot;Segoe UI&quot;;
+	border: null;
+	padding: 10%;
+}
+
+.QRadioButton:hover, .QPushButton:hover{
+background-color: rgb(69, 75, 84);
+}
+
+.QRadioButton:checked{
+background-color: rgb(38, 165, 154);
+}
+
+.QRadioButton::indicator{
+width: 0;
+}
+
+#doors_height {
+color: black;
+}
+
+#nomenclatures_widget, #nomenclatures_widget  QWidget {
+background-color: rgb(136, 139, 145);
+}
+
+.QTabWidget &gt; .QTabBar::tab {
+    height: 0;
+}
+
+.QTabWidget {
+    outline: 0;
+}</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QWidget" name="top_widget" native="true">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QPushButton" name="btn_exit">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>icons/cross.svg</normaloff>icons/cross.svg</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Expanding</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>18</width>
+            <height>30</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btn_save">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Сохранить</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>icons/disk.svg</normaloff>icons/disk.svg</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btn_save_2">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Перенести в 1С</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>icons/export.svg</normaloff>icons/export.svg</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btn_document">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Документ</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>icons/document.svg</normaloff>icons/document.svg</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btn_update">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Обновить</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>icons/refresh.svg</normaloff>icons/refresh.svg</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Expanding</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>19</width>
+            <height>30</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btn_add_door">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Добавить дверь</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>icons/plus.svg</normaloff>icons/plus.svg</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btn_add_door_2">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>icons/menu.svg</normaloff>icons/menu.svg</iconset>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QScrollArea" name="scrollArea">
+       <property name="widgetResizable">
+        <bool>true</bool>
+       </property>
+       <widget class="QWidget" name="scrollAreaWidgetContents">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>790</width>
+          <height>632</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QWidget" name="scheme_widget" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_5">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <spacer name="horizontalSpacer_5">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::MinimumExpanding</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QLabel" name="doors_height">
+              <property name="text">
+               <string>0</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_6">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::MinimumExpanding</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </item>
+     <item>
+      <widget class="QWidget" name="bottom_widget" native="true">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <spacer name="horizontalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Expanding</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>56</width>
+            <height>30</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="r_merge">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Объеденить</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>icons/apps.svg</normaloff>icons/apps.svg</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="r_unmerge">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Разъеденить</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>icons/arrows.svg</normaloff>icons/arrows.svg</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="r_material">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Материал</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>icons/palette.svg</normaloff>icons/palette.svg</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_7">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Preferred</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="r_delete_door">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Удалить</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>icons/trash.svg</normaloff>icons/trash.svg</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="r_edit_door">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Изменить</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>icons/edit.svg</normaloff>icons/edit.svg</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="r_double">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Дублировать</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>icons/layers.svg</normaloff>icons/layers.svg</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QWidget" name="rigth_widget" native="true">
+     <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <item>
+       <widget class="QTabWidget" name="tabWidget">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="tabPosition">
+         <enum>QTabWidget::North</enum>
+        </property>
+        <property name="tabShape">
+         <enum>QTabWidget::Rounded</enum>
+        </property>
+        <property name="currentIndex">
+         <number>1</number>
+        </property>
+        <property name="elideMode">
+         <enum>Qt::ElideLeft</enum>
+        </property>
+        <property name="usesScrollButtons">
+         <bool>true</bool>
+        </property>
+        <property name="documentMode">
+         <bool>true</bool>
+        </property>
+        <property name="tabsClosable">
+         <bool>false</bool>
+        </property>
+        <property name="tabBarAutoHide">
+         <bool>false</bool>
+        </property>
+        <widget class="QWidget" name="tab">
+         <attribute name="title">
+          <string>Tab 1</string>
+         </attribute>
+         <layout class="QHBoxLayout" name="horizontalLayout_9">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QScrollArea" name="right_pannel">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>300</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>300</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">#right_pannel {
+	border: null;
+}
+
+#right_pannel_content {
+	background-color: rgb(39, 50, 56);
+}
+
+.QRadioButton, .QPushButton {
+	background-color: rgba(255, 255, 255, 0);
+	color: rgb(255, 255, 255);
+	font: 700 9pt &quot;Segoe UI&quot;;
+	padding: 10%;
+	border: null;
+}
+
+.QComboBox {
+	background-color: #36474f;
+	color: rgb(255, 255, 255);
+	font: 700 9pt &quot;Segoe UI&quot;;
+	padding: 10%;
+	border: null;
+}
+
+.QRadioButton:hover, .QPushButton:hover, .QCheckBox:hover{
+background-color: rgb(69, 75, 84);
+}
+
+.QRadioButton:checked{
+background-color: rgb(38, 165, 154);
+}
+
+.QRadioButton::indicator, .QCheckBox::indicator{
+width: 0;
+}
+
+.QLabel {
+	color: rgb(136, 139, 145);
+	font: 700 9pt &quot;Segoe UI&quot;;
+	padding: 10%;
+}
+
+.QSpinBox, .QDateEdit, .QLineEdit, .QTextEdit,  .QCheckBox, #c_guide, #c_guide_decor{
+background-color: rgb(54, 71, 79);
+border: null;
+padding: 5%;
+border-color: rgb(200, 200, 200);
+color: rgb(200, 200, 200);
+}
+    
+    QScrollBar:vertical {
+        background-color: rgb(39, 50, 56);
+        width: 10px;
+        margin: 0px;
+    }
+    
+    QScrollBar::handle:vertical {
+        background-color: #c0c0c0;
+        min-height: 20px;
+    }
+    
+    QScrollBar::add-line:vertical,
+    QScrollBar::sub-line:vertical {
+        background: none;
+    }
+    
+    QScrollBar::add-page:vertical,
+    QScrollBar::sub-page:vertical {
+        background: none;
+    }
+
+#r_custom_overlap:checked +#i_overlap_count {
+background-color: rgb(38, 165, 154);
+}
+
+
+#r_custom_overlap:hover +#i_overlap_count {
+background-color: rgb(38, 165, 154);
+}
+
+.QGroupBox {
+border: null;
+}
+
+.QComboBox::drop-down {
+width: 0;
+}
+
+QMenu::itemQComboBox QAbstractItemView{
+color: white;
+            padding: 5px 20px;
+            background-color: rgb(39, 50, 56);
+            }
+QComboBox QAbstractItemView:selected {
+             background-color: rgb(69, 75, 84);
+            }</string>
+            </property>
+            <property name="verticalScrollBarPolicy">
+             <enum>Qt::ScrollBarAlwaysOn</enum>
+            </property>
+            <property name="horizontalScrollBarPolicy">
+             <enum>Qt::ScrollBarAlwaysOff</enum>
+            </property>
+            <property name="widgetResizable">
+             <bool>true</bool>
+            </property>
+            <widget class="QWidget" name="right_pannel_content">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>290</width>
+               <height>1082</height>
+              </rect>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_4">
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>9</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <layout class="QFormLayout" name="formLayout">
+                <property name="topMargin">
+                 <number>6</number>
+                </property>
+                <property name="rightMargin">
+                 <number>6</number>
+                </property>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="height">
+                  <property name="text">
+                   <string>ВЫСОТА</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QSpinBox" name="inp_height">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="focusPolicy">
+                   <enum>Qt::ClickFocus</enum>
+                  </property>
+                  <property name="wrapping">
+                   <bool>false</bool>
+                  </property>
+                  <property name="buttonSymbols">
+                   <enum>QAbstractSpinBox::NoButtons</enum>
+                  </property>
+                  <property name="correctionMode">
+                   <enum>QAbstractSpinBox::CorrectToPreviousValue</enum>
+                  </property>
+                  <property name="keyboardTracking">
+                   <bool>true</bool>
+                  </property>
+                  <property name="showGroupSeparator" stdset="0">
+                   <bool>false</bool>
+                  </property>
+                  <property name="minimum">
+                   <number>500</number>
+                  </property>
+                  <property name="maximum">
+                   <number>9999</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="long_2">
+                  <property name="text">
+                   <string>ШИРИНА</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QSpinBox" name="inp_width">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="focusPolicy">
+                   <enum>Qt::ClickFocus</enum>
+                  </property>
+                  <property name="buttonSymbols">
+                   <enum>QAbstractSpinBox::NoButtons</enum>
+                  </property>
+                  <property name="minimum">
+                   <number>500</number>
+                  </property>
+                  <property name="maximum">
+                   <number>9999</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="longL2">
+                  <property name="text">
+                   <string>ДЛИНА Н</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QLineEdit" name="inp_quide_long">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="placeholderText">
+                   <string>Автоматически</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="0">
+                 <widget class="QLabel" name="date">
+                  <property name="text">
+                   <string>ДАТА</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="1">
+                 <widget class="QDateEdit" name="inp_date">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="focusPolicy">
+                   <enum>Qt::ClickFocus</enum>
+                  </property>
+                  <property name="buttonSymbols">
+                   <enum>QAbstractSpinBox::NoButtons</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="0">
+                 <widget class="QLabel" name="norder">
+                  <property name="text">
+                   <string>№ ЗАКАЗА</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="1">
+                 <layout class="QHBoxLayout" name="horizontalLayout_8">
+                  <property name="spacing">
+                   <number>6</number>
+                  </property>
+                  <item>
+                   <widget class="QLineEdit" name="inp_responsibility">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>50</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="readOnly">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QSpinBox" name="inp_order_number">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="focusPolicy">
+                     <enum>Qt::ClickFocus</enum>
+                    </property>
+                    <property name="buttonSymbols">
+                     <enum>QAbstractSpinBox::NoButtons</enum>
+                    </property>
+                    <property name="suffix">
+                     <string/>
+                    </property>
+                    <property name="prefix">
+                     <string/>
+                    </property>
+                    <property name="minimum">
+                     <number>0</number>
+                    </property>
+                    <property name="maximum">
+                     <number>999</number>
+                    </property>
+                    <property name="stepType">
+                     <enum>QAbstractSpinBox::DefaultStepType</enum>
+                    </property>
+                    <property name="value">
+                     <number>0</number>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="norder_2">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="text">
+                     <string>/</string>
+                    </property>
+                    <property name="scaledContents">
+                     <bool>false</bool>
+                    </property>
+                    <property name="indent">
+                     <number>0</number>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QSpinBox" name="inp_order_number_part">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="focusPolicy">
+                     <enum>Qt::ClickFocus</enum>
+                    </property>
+                    <property name="buttonSymbols">
+                     <enum>QAbstractSpinBox::NoButtons</enum>
+                    </property>
+                    <property name="suffix">
+                     <string/>
+                    </property>
+                    <property name="prefix">
+                     <string/>
+                    </property>
+                    <property name="minimum">
+                     <number>0</number>
+                    </property>
+                    <property name="maximum">
+                     <number>999</number>
+                    </property>
+                    <property name="stepType">
+                     <enum>QAbstractSpinBox::DefaultStepType</enum>
+                    </property>
+                    <property name="value">
+                     <number>0</number>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item row="5" column="0">
+                 <widget class="QLabel" name="dateout">
+                  <property name="text">
+                   <string>ДАТА ГОТ.</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="1">
+                 <widget class="QDateEdit" name="inp_date_uot">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="focusPolicy">
+                   <enum>Qt::ClickFocus</enum>
+                  </property>
+                  <property name="buttonSymbols">
+                   <enum>QAbstractSpinBox::NoButtons</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item row="6" column="0">
+                 <widget class="QLabel" name="discription_10">
+                  <property name="text">
+                   <string>ПЕРЕХЛЕСТ</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="6" column="1">
+                 <widget class="QLineEdit" name="inp_overlap_count">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="placeholderText">
+                   <string>Стандартный</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="7" column="0">
+                 <widget class="QLabel" name="discription_6">
+                  <property name="text">
+                   <string>ШЛЕГЕЛЬ</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="7" column="1">
+                 <widget class="QCheckBox" name="ch_need_shlegel">
+                  <property name="text">
+                   <string>Нужен</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                  <property name="tristate">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="8" column="0">
+                 <widget class="QLabel" name="discription_11">
+                  <property name="text">
+                   <string>СИСТЕМА</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="8" column="1">
+                 <widget class="QCheckBox" name="c_bot_system">
+                  <property name="text">
+                   <string>Верхняя подвесная</string>
+                  </property>
+                  <property name="checked">
+                   <bool>false</bool>
+                  </property>
+                  <property name="tristate">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="9" column="0">
+                 <widget class="QLabel" name="discription_12">
+                  <property name="text">
+                   <string>НАПРАВЛ.</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="9" column="1">
+                 <widget class="QComboBox" name="c_guide">
+                  <property name="focusPolicy">
+                   <enum>Qt::NoFocus</enum>
+                  </property>
+                  <property name="insertPolicy">
+                   <enum>QComboBox::InsertAtBottom</enum>
+                  </property>
+                  <property name="sizeAdjustPolicy">
+                   <enum>QComboBox::AdjustToContentsOnFirstShow</enum>
+                  </property>
+                  <property name="duplicatesEnabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="frame">
+                   <bool>false</bool>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>2 полосы</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>1 полоса</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Без направляющих</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="10" column="0">
+                 <widget class="QLabel" name="lbl_guide_decor">
+                  <property name="text">
+                   <string>НАКЛАДК.</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="10" column="1">
+                 <widget class="QSpinBox" name="c_guide_decor">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="focusPolicy">
+                   <enum>Qt::ClickFocus</enum>
+                  </property>
+                  <property name="buttonSymbols">
+                   <enum>QAbstractSpinBox::NoButtons</enum>
+                  </property>
+                  <property name="suffix">
+                   <string/>
+                  </property>
+                  <property name="minimum">
+                   <number>0</number>
+                  </property>
+                  <property name="maximum">
+                   <number>10</number>
+                  </property>
+                  <property name="value">
+                   <number>2</number>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="QLabel" name="discription">
+                <property name="text">
+                 <string>ОПИСАНИЕ</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QVBoxLayout" name="verticalLayout_3">
+                <property name="spacing">
+                 <number>0</number>
+                </property>
+                <property name="leftMargin">
+                 <number>6</number>
+                </property>
+                <property name="topMargin">
+                 <number>6</number>
+                </property>
+                <property name="rightMargin">
+                 <number>6</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>6</number>
+                </property>
+                <item>
+                 <widget class="QTextEdit" name="inp_description">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QFormLayout" name="formLayout_2">
+                <property name="horizontalSpacing">
+                 <number>0</number>
+                </property>
+                <property name="verticalSpacing">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>16</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="color_2">
+                  <property name="text">
+                   <string>ЦВЕТ</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QPushButton" name="btn_color">
+                  <property name="text">
+                   <string>Нажмите, чтобы выбрать</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="discription_2">
+                  <property name="text">
+                   <string>КЛИЕНТ</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QPushButton" name="btn_customer">
+                  <property name="text">
+                   <string>Нажмите, чтобы выбрать</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="discription_4">
+                  <property name="text">
+                   <string>ПРОФИЛЬ</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QPushButton" name="btn_profile">
+                  <property name="text">
+                   <string>Нажмите, чтобы выбрать</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="0">
+                 <widget class="QLabel" name="discription_3">
+                  <property name="text">
+                   <string>РИГЕЛЬ</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="1">
+                 <widget class="QPushButton" name="btn_rigel">
+                  <property name="text">
+                   <string>Нажмите, чтобы выбрать</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="QGroupBox" name="groupBox_8">
+                <property name="title">
+                 <string/>
+                </property>
+                <layout class="QGridLayout" name="gridLayout_4">
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="spacing">
+                  <number>0</number>
+                 </property>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="discription_9">
+                <property name="text">
+                 <string>КОНФИГУРАЦИЯ</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="c_delivery_config">
+                <property name="focusPolicy">
+                 <enum>Qt::NoFocus</enum>
+                </property>
+                <property name="insertPolicy">
+                 <enum>QComboBox::InsertAtBottom</enum>
+                </property>
+                <property name="sizeAdjustPolicy">
+                 <enum>QComboBox::AdjustToContentsOnFirstShow</enum>
+                </property>
+                <property name="duplicatesEnabled">
+                 <bool>false</bool>
+                </property>
+                <property name="frame">
+                 <bool>false</bool>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>Без доставки</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>С доставкой</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="c_pack_config">
+                <property name="focusPolicy">
+                 <enum>Qt::NoFocus</enum>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>В пленку</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>В гофру</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>В ящик</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Без упаковки</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="c_set_config">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="focusPolicy">
+                 <enum>Qt::NoFocus</enum>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>Сборка</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Нарезка</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Нарезка, Сверловка</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="discription_8">
+                <property name="text">
+                 <string>ДОП. МАТЕРИАЛЫ</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QVBoxLayout" name="verticalLayout_7">
+                <property name="leftMargin">
+                 <number>6</number>
+                </property>
+                <property name="topMargin">
+                 <number>6</number>
+                </property>
+                <property name="rightMargin">
+                 <number>6</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>6</number>
+                </property>
+                <item>
+                 <widget class="QTextEdit" name="inp_additional_materials">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="tab_2">
+         <property name="styleSheet">
+          <string notr="true">#scrollArea_2 {
+	border: null;
+}
+
+#scrollAreaWidgetContents_2 {
+	background-color: rgb(39, 50, 56);
+}
+
+.QRadioButton, .QPushButton {
+	background-color: rgba(255, 255, 255, 0);
+	color: rgb(255, 255, 255);
+	font: 700 9pt &quot;Segoe UI&quot;;
+	padding: 10%;
+	border: null;
+}
+
+.QComboBox {
+	background-color: #36474f;
+	color: rgb(255, 255, 255);
+	font: 700 9pt &quot;Segoe UI&quot;;
+	padding: 10%;
+	border: null;
+}
+
+.QRadioButton:hover, .QPushButton:hover, .QCheckBox:hover{
+background-color: rgb(69, 75, 84);
+}
+
+.QRadioButton:checked{
+background-color: rgb(38, 165, 154);
+}
+
+.QRadioButton::indicator, .QCheckBox::indicator{
+width: 0;
+}
+
+.QLabel {
+	color: rgb(136, 139, 145);
+	font: 700 9pt &quot;Segoe UI&quot;;
+	padding: 10%;
+}
+
+.QSpinBox,.QDoubleSpinBox, .QDateEdit, .QLineEdit, .QTextEdit,  .QCheckBox, #c_guide, #c_guide_decor{
+background-color: rgb(54, 71, 79);
+border: null;
+padding: 5%;
+border-color: rgb(200, 200, 200);
+color: rgb(200, 200, 200);
+}
+    
+    QScrollBar:vertical {
+        background-color: rgb(39, 50, 56);
+        width: 10px;
+        margin: 0px;
+    }
+    
+    QScrollBar::handle:vertical {
+        background-color: #c0c0c0;
+        min-height: 20px;
+    }
+    
+    QScrollBar::add-line:vertical,
+    QScrollBar::sub-line:vertical {
+        background: none;
+    }
+    
+    QScrollBar::add-page:vertical,
+    QScrollBar::sub-page:vertical {
+        background: none;
+    }
+
+#r_custom_overlap:checked +#i_overlap_count {
+background-color: rgb(38, 165, 154);
+}
+
+
+#r_custom_overlap:hover +#i_overlap_count {
+background-color: rgb(38, 165, 154);
+}
+
+.QGroupBox {
+border: null;
+}
+
+.QComboBox::drop-down {
+width: 0;
+}
+
+QMenu::itemQComboBox QAbstractItemView{
+color: white;
+            padding: 5px 20px;
+            background-color: rgb(39, 50, 56);
+            }
+QComboBox QAbstractItemView:selected {
+             background-color: rgb(69, 75, 84);
+            }</string>
+         </property>
+         <attribute name="title">
+          <string>Tab 2</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QScrollArea" name="scrollArea_2">
+            <property name="frameShape">
+             <enum>QFrame::NoFrame</enum>
+            </property>
+            <property name="widgetResizable">
+             <bool>true</bool>
+            </property>
+            <widget class="QWidget" name="scrollAreaWidgetContents_2">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>-345</y>
+               <width>296</width>
+               <height>1026</height>
+              </rect>
+             </property>
+             <layout class="QGridLayout" name="gridLayout">
+              <item row="7" column="0" colspan="2">
+               <widget class="QLabel" name="color_10">
+                <property name="text">
+                 <string>Верхний</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="3">
+               <widget class="QDoubleSpinBox" name="doubleSpinBox">
+                <property name="buttonSymbols">
+                 <enum>QAbstractSpinBox::NoButtons</enum>
+                </property>
+                <property name="decimals">
+                 <number>1</number>
+                </property>
+               </widget>
+              </item>
+              <item row="24" column="0" colspan="4">
+               <widget class="QWidget" name="additional_nomenclature_widget_2" native="true">
+                <layout class="QGridLayout" name="gridLayout_3"/>
+               </widget>
+              </item>
+              <item row="5" column="3">
+               <widget class="QDoubleSpinBox" name="doubleSpinBox_5">
+                <property name="buttonSymbols">
+                 <enum>QAbstractSpinBox::NoButtons</enum>
+                </property>
+                <property name="decimals">
+                 <number>1</number>
+                </property>
+               </widget>
+              </item>
+              <item row="8" column="2">
+               <widget class="QPushButton" name="pushButton_7">
+                <property name="text">
+                 <string>...</string>
+                </property>
+               </widget>
+              </item>
+              <item row="7" column="3">
+               <widget class="QDoubleSpinBox" name="doubleSpinBox_6">
+                <property name="buttonSymbols">
+                 <enum>QAbstractSpinBox::NoButtons</enum>
+                </property>
+                <property name="decimals">
+                 <number>1</number>
+                </property>
+               </widget>
+              </item>
+              <item row="17" column="2">
+               <widget class="QPushButton" name="pushButton_15">
+                <property name="text">
+                 <string>...</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="2">
+               <widget class="QPushButton" name="pushButton_4">
+                <property name="text">
+                 <string>...</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0" colspan="2">
+               <widget class="QLabel" name="color_5">
+                <property name="text">
+                 <string>Нижняя</string>
+                </property>
+               </widget>
+              </item>
+              <item row="25" column="0" colspan="4">
+               <widget class="QPushButton" name="pushButton_16">
+                <property name="text">
+                 <string>Добавить позицию</string>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>icons/sircle-plus.svg</normaloff>icons/sircle-plus.svg</iconset>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0" colspan="2">
+               <widget class="QLabel" name="color_4">
+                <property name="text">
+                 <string>Верхняя</string>
+                </property>
+               </widget>
+              </item>
+              <item row="10" column="3">
+               <widget class="QDoubleSpinBox" name="doubleSpinBox_9">
+                <property name="buttonSymbols">
+                 <enum>QAbstractSpinBox::NoButtons</enum>
+                </property>
+                <property name="decimals">
+                 <number>1</number>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0" colspan="4">
+               <widget class="QLabel" name="color_3">
+                <property name="text">
+                 <string>НАПРАВЛЯЮЩАЯ</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="2">
+               <widget class="QPushButton" name="pushButton_3">
+                <property name="text">
+                 <string>...</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="2">
+               <widget class="QPushButton" name="pushButton_2">
+                <property name="text">
+                 <string>...</string>
+                </property>
+               </widget>
+              </item>
+              <item row="16" column="0" colspan="2">
+               <widget class="QLabel" name="color_19">
+                <property name="text">
+                 <string>Стопор</string>
+                </property>
+               </widget>
+              </item>
+              <item row="15" column="2">
+               <widget class="QPushButton" name="pushButton_13">
+                <property name="text">
+                 <string>...</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="3">
+               <widget class="QDoubleSpinBox" name="doubleSpinBox_2">
+                <property name="buttonSymbols">
+                 <enum>QAbstractSpinBox::NoButtons</enum>
+                </property>
+                <property name="decimals">
+                 <number>1</number>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="3">
+               <widget class="QDoubleSpinBox" name="doubleSpinBox_4">
+                <property name="buttonSymbols">
+                 <enum>QAbstractSpinBox::NoButtons</enum>
+                </property>
+                <property name="decimals">
+                 <number>1</number>
+                </property>
+               </widget>
+              </item>
+              <item row="16" column="2">
+               <widget class="QPushButton" name="pushButton_14">
+                <property name="text">
+                 <string>...</string>
+                </property>
+               </widget>
+              </item>
+              <item row="19" column="0" colspan="4">
+               <widget class="QLabel" name="color_23">
+                <property name="text">
+                 <string>...</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="18" column="0" colspan="4">
+               <widget class="QLabel" name="color_22">
+                <property name="text">
+                 <string>МАТЕРИАЛЫ</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="17" column="0" colspan="2">
+               <widget class="QLabel" name="color_20">
+                <property name="text">
+                 <string>Позиционер</string>
+                </property>
+               </widget>
+              </item>
+              <item row="8" column="3">
+               <widget class="QDoubleSpinBox" name="doubleSpinBox_7">
+                <property name="buttonSymbols">
+                 <enum>QAbstractSpinBox::NoButtons</enum>
+                </property>
+                <property name="decimals">
+                 <number>1</number>
+                </property>
+               </widget>
+              </item>
+              <item row="20" column="0" colspan="4">
+               <widget class="QWidget" name="materials_nomenclature_widget" native="true">
+                <layout class="QGridLayout" name="gridLayout_2"/>
+               </widget>
+              </item>
+              <item row="8" column="0" colspan="2">
+               <widget class="QLabel" name="color_11">
+                <property name="text">
+                 <string>Нижний</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="0" colspan="2">
+               <widget class="QLabel" name="color_6">
+                <property name="text">
+                 <string>Ходовой</string>
+                </property>
+               </widget>
+              </item>
+              <item row="13" column="0">
+               <widget class="QLabel" name="color_16">
+                <property name="text">
+                 <string>Шлегель</string>
+                </property>
+               </widget>
+              </item>
+              <item row="12" column="2">
+               <widget class="QPushButton" name="pushButton_11">
+                <property name="text">
+                 <string>...</string>
+                </property>
+               </widget>
+              </item>
+              <item row="9" column="2">
+               <widget class="QPushButton" name="pushButton_8">
+                <property name="text">
+                 <string>...</string>
+                </property>
+               </widget>
+              </item>
+              <item row="14" column="0" colspan="4">
+               <widget class="QLabel" name="color_17">
+                <property name="text">
+                 <string>ФУРНИТУРА</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="10" column="2">
+               <widget class="QPushButton" name="pushButton_9">
+                <property name="text">
+                 <string>...</string>
+                </property>
+               </widget>
+              </item>
+              <item row="15" column="0" colspan="2">
+               <widget class="QLabel" name="color_18">
+                <property name="text">
+                 <string>Ролики</string>
+                </property>
+               </widget>
+              </item>
+              <item row="5" column="0" colspan="2">
+               <widget class="QLabel" name="color_8">
+                <property name="text">
+                 <string>Заглушка</string>
+                </property>
+               </widget>
+              </item>
+              <item row="11" column="0" colspan="2">
+               <widget class="QLabel" name="color_14">
+                <property name="text">
+                 <string>Заглушка</string>
+                </property>
+               </widget>
+              </item>
+              <item row="9" column="0" colspan="2">
+               <widget class="QLabel" name="color_12">
+                <property name="text">
+                 <string>Ригель</string>
+                </property>
+               </widget>
+              </item>
+              <item row="9" column="3">
+               <widget class="QDoubleSpinBox" name="doubleSpinBox_8">
+                <property name="buttonSymbols">
+                 <enum>QAbstractSpinBox::NoButtons</enum>
+                </property>
+                <property name="decimals">
+                 <number>1</number>
+                </property>
+               </widget>
+              </item>
+              <item row="7" column="2">
+               <widget class="QPushButton" name="pushButton_6">
+                <property name="text">
+                 <string>...</string>
+                </property>
+               </widget>
+              </item>
+              <item row="13" column="2">
+               <widget class="QPushButton" name="pushButton_12">
+                <property name="text">
+                 <string>...</string>
+                </property>
+               </widget>
+              </item>
+              <item row="11" column="2">
+               <widget class="QPushButton" name="pushButton_10">
+                <property name="text">
+                 <string>...</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="2">
+               <widget class="QPushButton" name="pushButton">
+                <property name="text">
+                 <string>...</string>
+                </property>
+               </widget>
+              </item>
+              <item row="12" column="0">
+               <widget class="QLabel" name="color_15">
+                <property name="text">
+                 <string>Уплотнитель</string>
+                </property>
+               </widget>
+              </item>
+              <item row="6" column="0" colspan="4">
+               <widget class="QLabel" name="color_9">
+                <property name="text">
+                 <string>ПРОФИЛЬ</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="5" column="2">
+               <widget class="QPushButton" name="pushButton_5">
+                <property name="text">
+                 <string>...</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="0" colspan="2">
+               <widget class="QLabel" name="color_7">
+                <property name="text">
+                 <string>Накладка</string>
+                </property>
+               </widget>
+              </item>
+              <item row="21" column="0" colspan="4">
+               <widget class="QLabel" name="color_21">
+                <property name="text">
+                 <string>ДОПОЛНИТЕЛЬНО</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="3">
+               <widget class="QDoubleSpinBox" name="doubleSpinBox_3">
+                <property name="buttonSymbols">
+                 <enum>QAbstractSpinBox::NoButtons</enum>
+                </property>
+                <property name="decimals">
+                 <number>1</number>
+                </property>
+               </widget>
+              </item>
+              <item row="10" column="0" colspan="2">
+               <widget class="QLabel" name="color_13">
+                <property name="text">
+                 <string>Вертикальный</string>
+                </property>
+               </widget>
+              </item>
+              <item row="22" column="0" colspan="4">
+               <widget class="QLabel" name="color_24">
+                <property name="text">
+                 <string>...</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="15" column="3">
+               <widget class="QSpinBox" name="spinBox_13">
+                <property name="buttonSymbols">
+                 <enum>QAbstractSpinBox::NoButtons</enum>
+                </property>
+               </widget>
+              </item>
+              <item row="16" column="3">
+               <widget class="QSpinBox" name="spinBox_14">
+                <property name="buttonSymbols">
+                 <enum>QAbstractSpinBox::NoButtons</enum>
+                </property>
+               </widget>
+              </item>
+              <item row="17" column="3">
+               <widget class="QSpinBox" name="spinBox_15">
+                <property name="buttonSymbols">
+                 <enum>QAbstractSpinBox::NoButtons</enum>
+                </property>
+               </widget>
+              </item>
+              <item row="12" column="3">
+               <widget class="QSpinBox" name="spinBox_11">
+                <property name="buttonSymbols">
+                 <enum>QAbstractSpinBox::NoButtons</enum>
+                </property>
+               </widget>
+              </item>
+              <item row="13" column="3">
+               <widget class="QSpinBox" name="spinBox_12">
+                <property name="buttonSymbols">
+                 <enum>QAbstractSpinBox::NoButtons</enum>
+                </property>
+               </widget>
+              </item>
+              <item row="11" column="3">
+               <widget class="QSpinBox" name="spinBox_10">
+                <property name="buttonSymbols">
+                 <enum>QAbstractSpinBox::NoButtons</enum>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

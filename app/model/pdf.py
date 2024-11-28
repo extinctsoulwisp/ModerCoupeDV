@@ -1,15 +1,15 @@
 from reportlab.lib import colors
-from reportlab.lib.enums import TA_RIGHT
+from reportlab.lib.enums import TA_RIGHT, TA_CENTER
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen.canvas import Canvas
-from reportlab.platypus import SimpleDocTemplate, TableStyle, Paragraph, Table
+from reportlab.platypus import SimpleDocTemplate, TableStyle, Paragraph, Table, Image
 
 from app import data
 from app.model import Order
-from app.model.orm import MaterialData
+from app.model.orm import MaterialData, Database
 
 pdfmetrics.registerFont(TTFont("OpenSans", 'font/OpenSans.ttf'))
 pdfmetrics.registerFont(TTFont("OpenSansBold", 'font/OpenSans-Bold.ttf'))
@@ -146,6 +146,7 @@ def create_assigment_doc(order: Order, need_scheme: bool):
     pdf.build(story)
 
     if need_scheme:
+        # noinspection PyTypeChecker
         pdf.build(copy, canvasmaker=lambda *_, **__: draw_scheme(
             filename=pdf_path,
             pagesize=A4,
@@ -162,6 +163,7 @@ def create_scheme_doc(order: Order):
     a4_formate = tuple(reversed(A4)) if (sum(door.width for door in order.doors) * 1.1 >
                                          order.doorway_height - order.profile.guide) else A4
 
+    # noinspection PyTypeChecker
     SimpleDocTemplate(
         pdf_path,
         pagesize=A4,
@@ -250,7 +252,8 @@ def create_material_doc(order: Order, is_for_glass: bool, *materials: MaterialDa
     return pdf_path
 
 
-def draw_scheme(filename: str, pagesize: tuple, order: Order, ph: int, fragments_info: bool, door_spacing=.1):
+def draw_scheme(filename: str, pagesize: tuple, order: Order, ph: int, fragments_info: bool, door_spacing=.1,
+                _pos_y_start=None, full_page_width=None, fragments_numbers=True):
     fragment_ps = ParagraphStyle('', fontName='OpenSans', fontSize=10, spaceAfter=0)
     c = Canvas(filename, pagesize=pagesize)
 
@@ -269,7 +272,14 @@ def draw_scheme(filename: str, pagesize: tuple, order: Order, ph: int, fragments
     door_spacing = scheme_width / len(order.doors) * door_spacing * scale
     fragment_spacing = order.rigel.center_width * scale
 
-    pos_x = data.MARGIN * 1.5
+    if full_page_width is not None:
+        print(f"Adjusting scheme width to fit full page width: {full_page_width}", scheme_width * scale)
+        pos_x = full_page_width - data.MARGIN * 1.5 - scheme_width * scale
+    else:
+        pos_x = data.MARGIN * 1.5
+
+    if _pos_y_start is not None:
+        pos_y_start = _pos_y_start
     for door in order.doors:
         cols = door.cols
         rows = door.rows
@@ -280,7 +290,9 @@ def draw_scheme(filename: str, pagesize: tuple, order: Order, ph: int, fragments
                                    + fragment_spacing * (fragment.y - 1))
                 w = fragment.width * scale
                 h = fragment.height * scale
-                text = f"{fragment.number_in_scheme}"
+                text = ""
+                if fragments_numbers:
+                    text += f"{fragment.number_in_scheme}"
                 if fragments_info:
                     text += f" ({fragment.visible_height}x{fragment.visible_width} {fragment.material_name})"
                 c.setFillColor(colors.Color(233 / 255, 233 / 255, 233 / 255))
@@ -295,3 +307,83 @@ def draw_scheme(filename: str, pagesize: tuple, order: Order, ph: int, fragments
         pos_x += door.width * scale + door_spacing
 
     return c
+
+
+def create_customer_doc(order: Order):
+    pdf_path = f'documents\\Заказ_покупателя_{order.id}.pdf'
+
+    h_style = ParagraphStyle('', fontName='OpenSansBold', fontSize=data.MD_FONT_SIZE, leading=data.MD_LENDING,
+                             spaceAfter=data.SPACE_AFTER)
+    h_c_style = ParagraphStyle('', fontName='OpenSansBold', fontSize=data.MD_FONT_SIZE, leading=data.MD_LENDING,
+                               spaceAfter=data.SPACE_AFTER, alignment=TA_CENTER)
+    h_r_style = ParagraphStyle('', fontName='OpenSansBold', fontSize=data.H_FONT_SIZE, leading=data.H_LENDING,
+                               alignment=TA_RIGHT)
+    p_bold_style = ParagraphStyle('', fontName='OpenSansBold', fontSize=data.P_FONT_SIZE, leading=data.P_LENDING)
+    p_c_bold_style = ParagraphStyle('', fontName='OpenSansBold', fontSize=data.P_FONT_SIZE, leading=data.P_LENDING,
+                                    alignment=TA_CENTER)
+    tp = ParagraphStyle('', fontName='OpenSansBold', fontSize=data.MD_TABLE_FONT_SIZE, leading=data.MD_TABLE_LENDING)
+    p = ParagraphStyle('', fontName='OpenSans', fontSize=data.P_FONT_SIZE, leading=data.MD_LENDING)
+    p_r_style = ParagraphStyle('', fontName='OpenSans', fontSize=data.P_FONT_SIZE, leading=data.MD_LENDING,
+                               alignment=TA_RIGHT)
+
+    pdf = SimpleDocTemplate(
+        pdf_path,
+        pagesize=A4,
+        leftMargin=data.MARGIN,
+        rightMargin=data.MARGIN,
+        topMargin=data.MARGIN,
+        bottomMargin=data.MARGIN
+    )
+
+    story = [
+        t1 := Table(  # header
+            data=[[
+                Image('icons/logo_min.png', width=269, height=48),
+                Paragraph(f"{data.COMPANY_NAME}<br/>{data.ADDRESS}<br/>{data.PHONE}", style=p_r_style),
+            ]],
+            spaceAfter=data.SPACE_AFTER,
+            colWidths=col_width(.2, .8),
+            style=TableStyle([('VALIGN', (0, 0), (-1, -1), 'TOP'), ])
+        ),
+        p2 := Paragraph(f'Заказ-наряд покупателя №{order.visible_number}', h_c_style),
+        t3 := Table(  # header
+            data=[[p3 := Paragraph(
+                f"Дата создания: {order.create_date.strftime('%d.%m.%Y')}<br/>"
+                f"Покупатель: {order.customer.name}<br/>"
+                f"Отвественный: {order.responsible.name}<br/>"
+                f"Профиль: {order.profile.name}<br/>"
+                f"Цвет: {order.color.name}<br/>"
+                f"Кол-во дверей: {order.door_count}<br/>",
+                style=p
+            ), '']],
+            spaceAfter=data.SPACE_AFTER
+        ),
+        Table(
+            data=[
+                [P(text, p_c_bold_style) for text in ('№', 'Профиль', 'Ед.', 'Цена', 'Кол-во', 'Стоимость')],
+            ],
+            style=[('GRID', (0, 0), (-1, -1), 0, colors.black)],
+
+            colWidths=col_width(.05, .44, .09, .13, .12, .17),
+            spaceAfter=data.SPACE_AFTER,
+        )
+    ]
+
+    copy = story.copy()
+    pdf.build(story)
+    print(A4[0], p3.width)
+    # noinspection PyTypeChecker
+    pdf.build(copy, canvasmaker=lambda *_, **__: draw_scheme(
+        filename=pdf_path,
+        pagesize=[
+            A4[0] - p3.width,
+            p3.height + data.MARGIN * 2 + t1._height + p2.height + data.SPACE_AFTER * 3
+        ],
+        order=order,
+        ph=t1._height + p2.height + data.SPACE_AFTER * 3,
+        fragments_info=False,
+        _pos_y_start=A4[1] - (t1._height + p2.height + data.SPACE_AFTER * 3 + data.MARGIN),
+        full_page_width=A4[0],
+        fragments_numbers=False
+    ))
+    return pdf_path

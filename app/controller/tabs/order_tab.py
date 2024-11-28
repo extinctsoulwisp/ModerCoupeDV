@@ -413,6 +413,7 @@ class OrderTab(Tab):
         action = menu.addAction("Заявка на стекольный")
         action.triggered.connect(lambda: self.create_material_doc(is_for_glass=True))
         action = menu.addAction("Заказ покупателя")
+        action.triggered.connect(self.create_customer_doc)
 
         menu.exec(self._ui.btn_document.mapToGlobal(self._ui.btn_document.rect().bottomLeft()))
 
@@ -424,6 +425,13 @@ class OrderTab(Tab):
         self._update_scheme()
         try:
             subprocess.call(['start', '', self._order.create_material_doc(is_for_glass)], shell=True)
+        except Exception as e:
+            error_box(str(e))
+
+    def create_customer_doc(self):
+        self._update_scheme()
+        try:
+            subprocess.call(['start', '', self._order.create_customer_doc()], shell=True)
         except Exception as e:
             error_box(str(e))
 
