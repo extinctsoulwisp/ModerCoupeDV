@@ -12,6 +12,12 @@ from app.model.decryptor import password_decrypt, password_encrypt
 from app.model.orm import Database
 
 
+class NoEditTableItem(QTableWidgetItem):
+    def __init__(self, text: str):
+        super().__init__(text)
+        self.setFlags(Qt.ItemFlag.ItemIsEnabled | Qt.ItemFlag.ItemIsSelectable)
+
+
 class SqlTableItem(QTableWidgetItem):
     def __init__(self, instance: Database.Base, attr: str, type_in: Callable = str):
         super().__init__(type_in(instance[attr]))
@@ -134,6 +140,34 @@ class EncryptedSqlTableItem(SqlTableItem):
     def __init__(self, instance: Database.Base, attr: str):
         super().__init__(instance, attr, type_in=lambda i: "*" * 8)
         self.setFlags(Qt.ItemFlag.ItemIsEnabled | Qt.ItemFlag.ItemIsSelectable)
+
+    def setData(self, role, value):
+        if role == Qt.EditRole:
+            try:
+                self.instance[self.attr] = value
+            except Exception as e:
+                error_box(str(e))
+        super().setData(role, "*" * 8)
+
+    def item_double_clicked(self):
+        if result := input_box("Старый пароль", "Новый пароль", password_type=True):
+            old_password, new_password = result
+        else:
+            return
+        decrypted_old = password_decrypt(self.instance[self.attr], old_password.encode())
+        encrypted_new = password_encrypt(decrypted_old, new_password.encode())
+        self.setData(Qt.EditRole, encrypted_new)
+
+
+class OneCSqlTableItem(SqlTableItem):
+    def __init__(self, instance: Database.Base, attr: str, one_c_name: str):
+        super().__init__(instance, attr, type_in=str)
+        self.setFlags(Qt.ItemFlag.ItemIsEnabled | Qt.ItemFlag.ItemIsSelectable)
+        self.one_c_name: str = one_c_name
+
+    def load_name(self):
+        pass
+
 
     def setData(self, role, value):
         if role == Qt.EditRole:

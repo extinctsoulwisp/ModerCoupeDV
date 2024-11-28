@@ -1,5 +1,7 @@
 from .database import Database
 
+from .color_link_data import ProfileColorModel, RigelColorModel, RigelColor1cModel
+
 from .color_data import ColorData
 from .custom_col_size import CustomColSize
 from .custom_row_size import CustomRowSize
@@ -15,3 +17,5 @@ from .set_config_data import SetConfigData
 from .user_data import UserData
 from .order_number_part import OrderNumberPartData
 from .order_data import OrderData
+
+

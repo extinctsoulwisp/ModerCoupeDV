@@ -7,7 +7,7 @@ from PySide6.QtGui import QRegularExpressionValidator
 from PySide6.QtWidgets import QDialog, QMenu, QListView
 
 from app.model import Order, App, Material, DoorFragment
-from app.ui import Ui_OrderTab
+from app.ui import Ui_NewOrderTab
 from . import Tab
 from app import Error
 from .. import error_box, confirm_decorator, response_decorator, confirm_box
@@ -24,7 +24,7 @@ class OrderTab(Tab):
     def __init__(self, app: App, ui_app, order: Order):
         from .. import DoorFragmentController
         super().__init__("icons/document.svg", "Форм", app, ui_app, order.id)
-        self._ui: Ui_OrderTab = Ui_OrderTab()
+        self._ui: Ui_NewOrderTab = Ui_NewOrderTab()
         self._ui.setupUi(self._widget)
         self._order: Order = order
         self._doors: List[DoorController] = []
@@ -36,6 +36,9 @@ class OrderTab(Tab):
 
         self._setup()
         self._update_view()
+
+    def change_menu(self):
+        self._ui.tabWidget.setCurrentIndex((1, 0)[self._ui.tabWidget.currentIndex()])
 
     def rename_tab(self, new_name: str):
         self.list_item.setText(new_name)
@@ -65,6 +68,8 @@ class OrderTab(Tab):
         self._ui.c_set_config.setView(QListView())
         self._ui.c_delivery_config.setView(QListView())
         self._ui.c_pack_config.setView(QListView())
+
+        self._ui.btn_menu.clicked.connect(self.change_menu)
 
     def _update_model(self):
         self._order.doorway_height = self._ui.inp_height.value()
@@ -407,6 +412,7 @@ class OrderTab(Tab):
         action.triggered.connect(lambda: self.create_material_doc(is_for_glass=False))
         action = menu.addAction("Заявка на стекольный")
         action.triggered.connect(lambda: self.create_material_doc(is_for_glass=True))
+        action = menu.addAction("Заказ покупателя")
 
         menu.exec(self._ui.btn_document.mapToGlobal(self._ui.btn_document.rect().bottomLeft()))
 

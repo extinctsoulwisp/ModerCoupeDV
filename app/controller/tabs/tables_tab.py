@@ -2,11 +2,14 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QLabel, QSizePolicy, QMenu
 
 from app.controller import response_decorator, clear_layout, error_box
-from app.controller.sql_table_controller import SQLTableController, NumSqlTableItem, StrSqlTableItem, BoolSqlTableItem
+from app.controller.list_items import SearchListItem, InstanceListItem
+from app.controller.sql_table_controller import SQLTableController, NumSqlTableItem, StrSqlTableItem, BoolSqlTableItem, \
+    NoEditTableItem
 from app.controller.tabs import Tab
 from app.model import AdminApp
-from app.model.orm import UserData, ProfileData, RigelData, MaterialData, Database, ColorData, CustomerModel
-from app.ui.ui_admin_tables import Ui_tables_tab
+from app.model.orm import UserData, ProfileData, RigelData, MaterialData, Database, ColorData, CustomerModel, \
+    RigelColorModel, RigelColor1cModel
+from app.ui import Ui_TablesTabNew
 
 
 class DataTab(Tab):
@@ -15,7 +18,7 @@ class DataTab(Tab):
     def __init__(self, app: AdminApp, ui_app):
         super().__init__("icons/edit.svg", "Данные", app, ui_app, -1)
 
-        self._ui = Ui_tables_tab()
+        self._ui = Ui_TablesTabNew()
         self.db_session: Database.Session = Database.Session()
         self.cur_controller = None
         self._setup()
@@ -52,16 +55,7 @@ class DataTab(Tab):
                                SQLTableController.SQLTableColumn("name", "Название", StrSqlTableItem),
                                )
         ))
-        self._ui.btn_rigel.clicked.connect(lambda: self.update_table(
-            SQLTableController(self._ui.table,
-                               "Ригель",
-                               RigelData,
-                               RigelData.id,
-                               SQLTableController.SQLTableColumn("center_width", "Середина", NumSqlTableItem),
-                               SQLTableController.SQLTableColumn("depth", "Глубина", NumSqlTableItem),
-                               SQLTableController.SQLTableColumn("name", "Название", StrSqlTableItem),
-                               )
-        ))
+        self._ui.btn_rigel.clicked.connect(self.open_rigel_menu)
         self._ui.btn_material.clicked.connect(lambda: self.update_table(
             SQLTableController(self._ui.table,
                                "Материал",
@@ -85,12 +79,15 @@ class DataTab(Tab):
                                SQLTableController.SQLTableColumn("name", "Имя клиента", StrSqlTableItem),)
         ))
 
-        self._ui.btn_add.clicked.connect(self.add_row)
         self._ui.btn_save.clicked.connect(self.save)
         self._ui.table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self._ui.table.customContextMenuRequested.connect(self.show_table_context_menu)
 
+        self._ui.lst_rigel_names.itemClicked.connect(self.open_rigel_instance)
+        self._ui.lst_rigel_colors.itemChanged.connect(self.rigel_color_select)
+
     def update_table(self, controller: SQLTableController):
+        self._ui.tabWidget.setCurrentIndex(2)
         self.cur_controller = controller
         self.db_session.close()
         self.db_session = Database.Session()
@@ -103,6 +100,92 @@ class DataTab(Tab):
             filters = []
 
         controller.enable((self.db_session.query(controller.model)), *filters)
+
+    def open_rigel_menu(self):
+        self.cur_controller = None
+        self.db_session.close()
+        self.db_session = Database.Session()
+        self._ui.tabWidget.setCurrentIndex(1)
+
+        self._ui.lst_rigel_names.clear()
+        self._ui.tbl_rigel_params.clear()
+        self._ui.tbl_rigel_params.setRowCount(2)
+        self._ui.lst_rigel_colors.clear()
+        self._ui.tbl_rigel_1c.clear()
+        self._ui.tbl_rigel_1c.setRowCount(1)
+
+        for (id_, name) in self.db_session.query(RigelData.id, RigelData.name).order_by(RigelData.id.desc()).all():
+            self._ui.lst_rigel_names.addItem(SearchListItem((id_, name)))
+
+        for color_data in self.db_session.query(ColorData).order_by(ColorData.id.desc()).all():
+            # noinspection PyTypeChecker
+            self._ui.lst_rigel_colors.addItem(
+                item := InstanceListItem(color_data, f"<{color_data.id}> {color_data.name}")
+            )
+            item.setCheckState(Qt.CheckState.Unchecked)
+
+    def open_rigel_instance(self, rigel_item: SearchListItem):
+        self._ui.lst_rigel_colors.setCurrentItem(None)
+        self._ui.tbl_rigel_1c.clear()
+
+        for i in range(self._ui.lst_rigel_colors.count()):
+            self._ui.lst_rigel_colors.item(i).setCheckState(Qt.CheckState.Unchecked)
+
+        i = 0
+        for color_id, in (
+                self.db_session.query(RigelColorModel.color_id)
+                .filter(RigelColorModel.rigel_id == rigel_item.id)
+                .order_by(RigelColorModel.color_id.desc())
+                .all()
+        ):
+            while self._ui.lst_rigel_colors.item(i).instance.id > color_id:
+                i += 1
+
+            color_item: SearchListItem = self._ui.lst_rigel_colors.item(i)
+            color_item.setCheckState(Qt.CheckState.Checked)
+            i += 1
+
+        # noinspection PyTypeChecker
+        instance: RigelData = self.db_session.query(RigelData).filter(RigelData.id == rigel_item.id).one()
+        params = [
+            (NoEditTableItem('Середина'), NumSqlTableItem(instance, 'center_width')),
+            (NoEditTableItem('Глубина'), NumSqlTableItem(instance, 'depth')),
+        ]
+        for i, row in enumerate(params):
+            for j, item in enumerate(row):
+                self._ui.tbl_rigel_params.setItem(i, j, item)
+
+    def rigel_color_select(self, item: InstanceListItem):
+        if (cur_item := self._ui.lst_rigel_names.currentItem()) is None:
+            return
+
+        instance = self.db_session.query(RigelData).filter(RigelData.id == cur_item.id).one()
+        if item.checkState() == Qt.CheckState.Checked:
+            self.db_session.merge(RigelColorModel(rigel_id=instance.id, color_id=item.instance.id))
+        else:
+            self.db_session.delete(RigelColorModel(rigel_id=instance.id, color_id=item.instance.id))
+
+    def open_rigel_color_instance(self, color_item: InstanceListItem):
+        if (cur_item := self._ui.lst_rigel_names.currentItem()) is None:
+            return
+
+        rigel = self.db_session.query(RigelData).filter(RigelData.id == cur_item.id).one()
+
+        # noinspection PyTypeChecker
+        if (instance := (
+            self.db_session.query(RigelColor1cModel)
+            .filter(
+                RigelColor1cModel.rigel_id == rigel.id,
+            ).one()
+        )) is None:
+            self.db_session.add(instance := RigelColor1cModel(rigel_id=rigel.id, color_id=color_item.instance.id))
+
+        params = [
+            (NoEditTableItem('Ригель'), NumSqlTableItem(instance, 'center_width')),
+        ]
+        for i, row in enumerate(params):
+            for j, item in enumerate(row):
+                self._ui.tbl_rigel_params.setItem(i, j, item)
 
     def add_row(self):
         self.db_session.add(self.cur_controller.model())

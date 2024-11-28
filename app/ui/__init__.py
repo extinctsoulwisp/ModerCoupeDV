@@ -4,3 +4,5 @@ from .ui_login import Ui_LoginDialog
 from .ui_main_window import Ui_MainWindow
 from .ui_order import Ui_OrderTab
 from .ui_search import Ui_SearchTab
+from .ui_order_new import Ui_OrderTab as Ui_NewOrderTab
+from .ui_data_new import Ui_tables_tab as Ui_TablesTabNew

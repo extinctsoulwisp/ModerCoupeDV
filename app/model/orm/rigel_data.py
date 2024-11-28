@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, REAL, Boolean
+from sqlalchemy.orm import Mapped, relationship
 
-from . import Database
+from . import Database, ColorData, RigelColorModel
 
 
 class RigelData(Database.Base):
@@ -12,3 +13,8 @@ class RigelData(Database.Base):
     depth: Column[REAL] = Column(REAL, default=0)
 
     on_delete: Column[Boolean] = Column(Boolean, default=False)
+
+    colors: Mapped[list[ColorData]] = relationship(
+        secondary="rigel_color",
+        uselist=True
+    )

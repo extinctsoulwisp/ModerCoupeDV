@@ -17,7 +17,7 @@ class Database:
     def init(cls, password, is_user=True) -> str:
         try:
             cls.engine = create_engine(f"postgresql+psycopg2://{USER if is_user else ADMIN }"
-                                       f":{password.decode()}@{HOST}:{PORT}/{DATABASE}")
+                                       f":{password.decode()}@{HOST}:{PORT}/{DATABASE}", echo=True)
             connection = cls.engine.connect()
             cls.Session = sessionmaker(bind=cls.engine)
             connection.close()
