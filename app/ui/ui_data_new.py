@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'data_newhuembm.ui'
+## Form generated from reading UI file 'data_newgBWkfe.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.6.0
 ##
@@ -195,7 +195,7 @@ class Ui_tables_tab(object):
 "    outline: 0;\n"
 "}\n"
 "\n"
-"#profile_tab, #rigel_tab {\n"
+"#profile_tab, #rigel_tab, #config_tab {\n"
 "background-color: rgb(241, 244, 249);\n"
 "}\n"
 "\n"
@@ -268,6 +268,11 @@ class Ui_tables_tab(object):
 
         self.verticalLayout.addWidget(self.btn_rigel)
 
+        self.btn_config = QPushButton(self.rigth_widget)
+        self.btn_config.setObjectName(u"btn_config")
+
+        self.verticalLayout.addWidget(self.btn_config)
+
         self.label_14 = QLabel(self.rigth_widget)
         self.label_14.setObjectName(u"label_14")
 
@@ -280,6 +285,13 @@ class Ui_tables_tab(object):
 
         self.btn_material = QPushButton(self.rigth_widget)
         self.btn_material.setObjectName(u"btn_material")
+        font = QFont()
+        font.setFamilies([u"Segoe UI"])
+        font.setPointSize(9)
+        font.setBold(True)
+        font.setItalic(False)
+        font.setStrikeOut(True)
+        self.btn_material.setFont(font)
 
         self.verticalLayout.addWidget(self.btn_material)
 
@@ -290,8 +302,19 @@ class Ui_tables_tab(object):
 
         self.btn_customer = QPushButton(self.rigth_widget)
         self.btn_customer.setObjectName(u"btn_customer")
+        self.btn_customer.setFont(font)
 
         self.verticalLayout.addWidget(self.btn_customer)
+
+        self.btn_1c_customer = QPushButton(self.rigth_widget)
+        self.btn_1c_customer.setObjectName(u"btn_1c_customer")
+
+        self.verticalLayout.addWidget(self.btn_1c_customer)
+
+        self.btn_1c_nomenclature = QPushButton(self.rigth_widget)
+        self.btn_1c_nomenclature.setObjectName(u"btn_1c_nomenclature")
+
+        self.verticalLayout.addWidget(self.btn_1c_nomenclature)
 
         self.label_2 = QLabel(self.rigth_widget)
         self.label_2.setObjectName(u"label_2")
@@ -630,13 +653,74 @@ class Ui_tables_tab(object):
         self.horizontalLayout_4.addWidget(self.table)
 
         self.tabWidget.addTab(self.table_tab, "")
+        self.config_tab = QWidget()
+        self.config_tab.setObjectName(u"config_tab")
+        self.gridLayout_4 = QGridLayout(self.config_tab)
+        self.gridLayout_4.setObjectName(u"gridLayout_4")
+        self.gridLayout_4.setHorizontalSpacing(30)
+        self.gridLayout_4.setContentsMargins(30, 30, 30, 30)
+        self.lst_config_names = QListWidget(self.config_tab)
+        QListWidgetItem(self.lst_config_names)
+        QListWidgetItem(self.lst_config_names)
+        QListWidgetItem(self.lst_config_names)
+        QListWidgetItem(self.lst_config_names)
+        self.lst_config_names.setObjectName(u"lst_config_names")
+        self.lst_config_names.setContextMenuPolicy(Qt.CustomContextMenu)
+
+        self.gridLayout_4.addWidget(self.lst_config_names, 1, 0, 1, 1)
+
+        self.lst_config_params = QListWidget(self.config_tab)
+        QListWidgetItem(self.lst_config_params)
+        self.lst_config_params.setObjectName(u"lst_config_params")
+        self.lst_config_params.setContextMenuPolicy(Qt.CustomContextMenu)
+
+        self.gridLayout_4.addWidget(self.lst_config_params, 1, 1, 1, 1)
+
+        self.label_13 = QLabel(self.config_tab)
+        self.label_13.setObjectName(u"label_13")
+        self.label_13.setAlignment(Qt.AlignCenter)
+
+        self.gridLayout_4.addWidget(self.label_13, 0, 1, 1, 1)
+
+        self.label_11 = QLabel(self.config_tab)
+        self.label_11.setObjectName(u"label_11")
+        self.label_11.setAlignment(Qt.AlignCenter)
+
+        self.gridLayout_4.addWidget(self.label_11, 0, 0, 1, 1)
+
+        self.label_15 = QLabel(self.config_tab)
+        self.label_15.setObjectName(u"label_15")
+        self.label_15.setAlignment(Qt.AlignCenter)
+
+        self.gridLayout_4.addWidget(self.label_15, 0, 2, 1, 1)
+
+        self.tbl_config_1c = QTableWidget(self.config_tab)
+        if (self.tbl_config_1c.columnCount() < 1):
+            self.tbl_config_1c.setColumnCount(1)
+        __qtablewidgetitem59 = QTableWidgetItem()
+        self.tbl_config_1c.setHorizontalHeaderItem(0, __qtablewidgetitem59)
+        if (self.tbl_config_1c.rowCount() < 1):
+            self.tbl_config_1c.setRowCount(1)
+        self.tbl_config_1c.setObjectName(u"tbl_config_1c")
+        self.tbl_config_1c.setSelectionMode(QAbstractItemView.NoSelection)
+        self.tbl_config_1c.setShowGrid(True)
+        self.tbl_config_1c.horizontalHeader().setVisible(False)
+        self.tbl_config_1c.horizontalHeader().setStretchLastSection(True)
+        self.tbl_config_1c.verticalHeader().setVisible(False)
+
+        self.gridLayout_4.addWidget(self.tbl_config_1c, 1, 2, 1, 1)
+
+        self.gridLayout_4.setColumnStretch(0, 1)
+        self.gridLayout_4.setColumnStretch(1, 1)
+        self.gridLayout_4.setColumnStretch(2, 2)
+        self.tabWidget.addTab(self.config_tab, "")
 
         self.gridLayout.addWidget(self.tabWidget, 2, 0, 1, 1)
 
 
         self.retranslateUi(tables_tab)
 
-        self.tabWidget.setCurrentIndex(2)
+        self.tabWidget.setCurrentIndex(3)
 
 
         QMetaObject.connectSlotsByName(tables_tab)
@@ -649,11 +733,14 @@ class Ui_tables_tab(object):
         self.label.setText(QCoreApplication.translate("tables_tab", u"\u0421\u0418\u0421\u0422\u0415\u041c\u042b", None))
         self.btn_profile.setText(QCoreApplication.translate("tables_tab", u"\u041f\u0440\u043e\u0444\u0438\u043b\u044c", None))
         self.btn_rigel.setText(QCoreApplication.translate("tables_tab", u"\u0420\u0438\u0433\u0435\u043b\u044c", None))
+        self.btn_config.setText(QCoreApplication.translate("tables_tab", u"\u0423\u0441\u043b\u0443\u0433\u0438", None))
         self.label_14.setText(QCoreApplication.translate("tables_tab", u"\u0422\u0410\u0411\u041b\u0418\u0426\u042b", None))
         self.btn_user.setText(QCoreApplication.translate("tables_tab", u"\u041f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u044c", None))
         self.btn_material.setText(QCoreApplication.translate("tables_tab", u"\u041c\u0430\u0442\u0435\u0440\u0438\u0430\u043b", None))
         self.btn_color.setText(QCoreApplication.translate("tables_tab", u"\u0426\u0432\u0435\u0442", None))
         self.btn_customer.setText(QCoreApplication.translate("tables_tab", u"\u041a\u043b\u0438\u0435\u043d\u0442", None))
+        self.btn_1c_customer.setText(QCoreApplication.translate("tables_tab", u"1C.\u041a\u043b\u0438\u0435\u043d\u0442", None))
+        self.btn_1c_nomenclature.setText(QCoreApplication.translate("tables_tab", u"1C.\u041d\u043e\u043c\u0435\u043d\u043a\u043b\u0430\u0442\u0443\u0440\u0430", None))
         self.label_2.setText(QCoreApplication.translate("tables_tab", u"\u041f\u041e\u041a\u0410\u0417\u0410\u0422\u042c", None))
         self.groupBox.setTitle("")
         self.r_actual.setText(QCoreApplication.translate("tables_tab", u"\u0410\u043a\u0442\u0443\u0430\u043b\u044c\u043d\u044b\u0435", None))
@@ -860,5 +947,31 @@ class Ui_tables_tab(object):
 
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.rigel_tab), QCoreApplication.translate("tables_tab", u"\u0421\u0442\u0440\u0430\u043d\u0438\u0446\u0430", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.table_tab), QCoreApplication.translate("tables_tab", u"\u0421\u0442\u0440\u0430\u043d\u0438\u0446\u0430", None))
+
+        __sortingEnabled6 = self.lst_config_names.isSortingEnabled()
+        self.lst_config_names.setSortingEnabled(False)
+        ___qlistwidgetitem22 = self.lst_config_names.item(0)
+        ___qlistwidgetitem22.setText(QCoreApplication.translate("tables_tab", u"\u0414\u043e\u0441\u0442\u0430\u0432\u043a\u0430", None));
+        ___qlistwidgetitem23 = self.lst_config_names.item(1)
+        ___qlistwidgetitem23.setText(QCoreApplication.translate("tables_tab", u"\u0421\u0431\u043e\u0440\u043a\u0430", None));
+        ___qlistwidgetitem24 = self.lst_config_names.item(2)
+        ___qlistwidgetitem24.setText(QCoreApplication.translate("tables_tab", u"\u0423\u043f\u0430\u043a\u043e\u0432\u043a\u0430", None));
+        ___qlistwidgetitem25 = self.lst_config_names.item(3)
+        ___qlistwidgetitem25.setText(QCoreApplication.translate("tables_tab", u"\u041f\u043e-\u0443\u043c\u043e\u043b\u0447\u0430\u043d\u0438\u044e", None));
+        self.lst_config_names.setSortingEnabled(__sortingEnabled6)
+
+
+        __sortingEnabled7 = self.lst_config_params.isSortingEnabled()
+        self.lst_config_params.setSortingEnabled(False)
+        ___qlistwidgetitem26 = self.lst_config_params.item(0)
+        ___qlistwidgetitem26.setText(QCoreApplication.translate("tables_tab", u"\u041f\u043e-\u0443\u043c\u043e\u043b\u0447\u0430\u043d\u0438\u044e", None));
+        self.lst_config_params.setSortingEnabled(__sortingEnabled7)
+
+        self.label_13.setText(QCoreApplication.translate("tables_tab", u"\u0417\u041d\u0410\u0427\u0415\u041d\u0418\u0415", None))
+        self.label_11.setText(QCoreApplication.translate("tables_tab", u"\u041a\u041e\u041d\u0424\u0418\u0413\u0423\u0420\u0410\u0426\u0418\u042f", None))
+        self.label_15.setText(QCoreApplication.translate("tables_tab", u"\u0421\u0412\u042f\u0417\u042c \u0421 1\u0421", None))
+        ___qtablewidgetitem58 = self.tbl_config_1c.horizontalHeaderItem(0)
+        ___qtablewidgetitem58.setText(QCoreApplication.translate("tables_tab", u"\u041f\u043e\u0437\u0438\u0446\u0438\u044f", None));
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.config_tab), QCoreApplication.translate("tables_tab", u"\u0421\u0442\u0440\u0430\u043d\u0438\u0446\u0430", None))
     # retranslateUi
 

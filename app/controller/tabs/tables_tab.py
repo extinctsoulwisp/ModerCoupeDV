@@ -5,12 +5,12 @@ from PySide6.QtWidgets import QLabel, QSizePolicy, QMenu
 from app.controller import response_decorator, clear_layout, error_box
 from app.controller.list_items import SearchListItem, InstanceListItem
 from app.controller.sql_table_controller import SQLTableController, NumSqlTableItem, StrSqlTableItem, BoolSqlTableItem, \
-    NoEditTableItem, OneCSqlTableItem
+    NoEditTableItem, OneCSqlTableItem, SqlTableItem
 from app.controller.tabs import Tab
 from app.model import AdminApp
 from app.model.orm import UserData, ProfileData, RigelData, MaterialData, Database, ColorData, CustomerModel, \
     RigelColorModel, RigelColor1cModel, ProfileColorModel
-from app.model.orm.color_link_data import ProfileColor1cModel
+from app.model.orm.one_c_data import ProfileColor1cModel, Customer1cData, Nomenclature1cData, Config1cData
 from app.ui import Ui_TablesTabNew
 
 
@@ -36,6 +36,10 @@ class DataTab(Tab):
         self._ui.lst_profile_colors.clear()
         self._ui.tbl_profile_1c.clear()
 
+        self._ui.lst_config_names.clear()
+        self._ui.lst_config_params.clear()
+        self._ui.tbl_config_1c.clear()
+
     def _setup(self):
         self._ui.setupUi(self._widget)
         self._ui.table.itemDoubleClicked.connect(lambda i: i.item_double_clicked())
@@ -51,6 +55,7 @@ class DataTab(Tab):
         ))
         self._ui.btn_profile.clicked.connect(self.open_profile_menu)
         self._ui.btn_rigel.clicked.connect(self.open_rigel_menu)
+        self._ui.btn_config.clicked.connect(self.open_config_menu)
         self._ui.btn_material.clicked.connect(lambda: self.update_table(
             SQLTableController(self._ui.table,
                                "Материал",
@@ -72,6 +77,25 @@ class DataTab(Tab):
                                CustomerModel,
                                CustomerModel.id,
                                SQLTableController.SQLTableColumn("name", "Имя клиента", StrSqlTableItem), )
+        ))
+        self._ui.btn_1c_customer.clicked.connect(lambda: self.update_table(
+            SQLTableController(self._ui.table,
+                               "1C.Клиент",
+                               Customer1cData,
+                               Customer1cData.one_c_id,
+                               SQLTableController.SQLTableColumn("one_c_id", "Код 1С", SqlTableItem),
+                               SQLTableController.SQLTableColumn("name", "Имя клиента", StrSqlTableItem), )
+        ))
+        self._ui.btn_1c_nomenclature.clicked.connect(lambda: self.update_table(
+            SQLTableController(self._ui.table,
+                               "1C.Номенклатура",
+                               Nomenclature1cData,
+                               Nomenclature1cData.one_c_id,
+                               SQLTableController.SQLTableColumn("one_c_id", "Код 1С", SqlTableItem),
+                               SQLTableController.SQLTableColumn("price", "Цена", SqlTableItem),
+                               SQLTableController.SQLTableColumn("unit", "Ед. измерения", StrSqlTableItem),
+                               SQLTableController.SQLTableColumn("category", "Категория", StrSqlTableItem),
+                               SQLTableController.SQLTableColumn("name", "Наименование", SqlTableItem), )
         ))
 
         self._ui.btn_save.clicked.connect(self.save)
@@ -103,6 +127,13 @@ class DataTab(Tab):
             lambda *_: self.open_profile_color_instance(self._ui.lst_profile_colors.currentItem())
         )
         self._ui.tbl_profile_1c.itemDoubleClicked.connect(lambda i: i.item_double_clicked())
+
+        self._ui.lst_config_names.itemSelectionChanged.connect(
+            lambda *_: self.open_config_name(self._ui.lst_config_names.currentItem())
+        )
+        self._ui.lst_config_params.itemSelectionChanged.connect(
+            lambda *_: self.open_config_pare(self._ui.lst_config_params.currentItem())
+        )
 
     def get_filters(self, model):
         if self._ui.r_actual.isChecked():
@@ -143,7 +174,7 @@ class DataTab(Tab):
                 item.setFont(font)
 
         for color_data in (self.db_session.query(ColorData)
-                                .filter(*self.get_filters(ColorData)).order_by(ColorData.id.desc()).all()):
+                .filter(*self.get_filters(ColorData)).order_by(ColorData.id.desc()).all()):
             # noinspection PyTypeChecker
             self._ui.lst_rigel_colors.addItem(
                 item := InstanceListItem(color_data, f"<{color_data.id}> {color_data.name}")
@@ -241,7 +272,7 @@ class DataTab(Tab):
                 item.setFont(font)
 
         for color_data in (self.db_session.query(ColorData)
-                                .filter(*self.get_filters(ColorData)).order_by(ColorData.id.desc()).all()):
+                .filter(*self.get_filters(ColorData)).order_by(ColorData.id.desc()).all()):
             # noinspection PyTypeChecker
             self._ui.lst_profile_colors.addItem(
                 item := InstanceListItem(color_data, f"<{color_data.id}> {color_data.name}")
@@ -396,3 +427,51 @@ class DataTab(Tab):
 
         elif self._ui.tabWidget.currentIndex() == 2:
             pass
+
+    def open_config_menu(self, *, reopen_session=True):
+        if reopen_session:
+            self.db_session.close()
+            self.db_session = Database.Session()
+
+        self.cur_controller = None
+        self._ui.tabWidget.setCurrentIndex(3)
+        self.clear_tabs()
+
+        for config_name, in (
+                self.db_session.query(Config1cData.config_name.distinct())
+                        .all()
+
+        ):
+            self._ui.lst_config_names.addItem(SearchListItem((0, config_name)))
+
+    def open_config_name(self, config_item: SearchListItem):
+        self._ui.tbl_config_1c.clear()
+        self._ui.lst_config_params.clear()
+
+        for config_value, config_id in (
+                self.db_session.query(Config1cData.config_value, Config1cData.config_id)
+                        .filter(Config1cData.config_name == config_item.data_tuple[1])
+                        .order_by(Config1cData.id.desc())
+                        .all()
+
+        ):
+            self._ui.lst_config_params.addItem(SearchListItem((config_id, config_value)))
+
+    def open_config_pare(self, config_item: SearchListItem):
+        if (cur_item := self._ui.lst_config_names.currentItem()) is None:
+            return
+
+        config_name = cur_item.data_tuple[1]
+        self._ui.tbl_config_1c.clear()
+        self._ui.tbl_config_1c.setRowCount(0)
+
+        # noinspection PyTypeChecker
+        for config in (
+                self.db_session.query(Config1cData)
+                        .filter(
+                    Config1cData.config_name == config_name,
+                    Config1cData.config_id == config_item.id
+                ).all()
+        ):
+            self._ui.tbl_config_1c.insertRow(0)
+            self._ui.tbl_config_1c.setItem(0, 0, SqlTableItem(config, 'one_c_id'))

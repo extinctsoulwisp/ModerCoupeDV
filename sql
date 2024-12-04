@@ -44,3 +44,31 @@ CREATE TABLE profile_color_1c (
 	FOREIGN KEY(profile_id) REFERENCES profile (id),
 	FOREIGN KEY(color_id) REFERENCES color (id)
 );
+
+CREATE TABLE config_1c (
+	id SERIAL NOT NULL,
+	config_name VARCHAR,
+	config_value SMALLINT,
+	one_c_id VARCHAR,
+	PRIMARY KEY (id)
+);
+
+CREATE TABLE "Nomenclature1cData" (
+	id INTEGER NOT NULL,
+	one_c_id VARCHAR,
+	name VARCHAR,
+	price REAL,
+	unit VARCHAR,
+	category VARCHAR,
+	on_delete BOOLEAN,
+	PRIMARY KEY (id, one_c_id)
+);
+
+
+CREATE TABLE "Customer1cData" (
+	id INTEGER NOT NULL,
+	one_c_id VARCHAR,
+	name VARCHAR,
+	on_delete BOOLEAN,
+	PRIMARY KEY (id, one_c_id)
+);

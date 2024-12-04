@@ -9,6 +9,7 @@ from reportlab.platypus import SimpleDocTemplate, TableStyle, Paragraph, Table, 
 
 from app import data
 from app.model import Order
+from app.model.one_c import OneCNomenclature
 from app.model.orm import MaterialData, Database
 
 pdfmetrics.registerFont(TTFont("OpenSans", 'font/OpenSans.ttf'))
@@ -16,6 +17,18 @@ pdfmetrics.registerFont(TTFont("OpenSansBold", 'font/OpenSans-Bold.ttf'))
 
 col_width = lambda *k, width=(A4[0] - data.MARGIN * 2): [width * k_ for k_ in k]
 P = Paragraph
+
+
+def num_to_str(num: int | float | None):
+    if num is None:
+        return ""
+    num = float(num)
+    if num.is_integer():
+        num = int(num)
+    else:
+        num = round(num, 2)
+    print(num)
+    return "" if num is None else f"{num:_}".replace('.', ',').replace('_', ' ')
 
 
 def create_assigment_doc(order: Order, need_scheme: bool):
@@ -335,6 +348,24 @@ def create_customer_doc(order: Order):
         bottomMargin=data.MARGIN
     )
 
+    materials = [
+        (OneCNomenclature('', 'Серебро Верхняя 2-х полоз. направляющая 5,9м', 389, 'м'), 1.6),
+        (OneCNomenclature('', 'Серебро Нижняя 2-х полоз. направляющая 5,9м', 220, 'м'), 1.6),
+        (OneCNomenclature('', 'Серебро Горизонт.профиль верхний 5,9м', 176, 'м'), 1.6),
+        (OneCNomenclature('', 'Серебро Горизонт.профиль нижний 5,9м', 389, 'м'), 1.6),
+        (OneCNomenclature('', 'Серебро Ригель 5,9м', 188, 'м'), 3.2),
+        (OneCNomenclature('', 'Серебро Вертикал.профиль открытый 5,9м', 1433, 'шт'), 2),
+        (OneCNomenclature('', 'К-т роликов СН-01 ОРК асим.верх подшипник 6*35', 250, 'компл'), 2),
+        (OneCNomenclature('', 'Шлегель 7*6 серебро', 15, 'м'), 10),
+        (OneCNomenclature('', 'Стопор платиковый (Серый)', 25, 'шт'), 2),
+    ]
+
+    services = [
+        (OneCNomenclature('', 'Нарезка профиля в размер', 15, 'шт'), 14),
+        (OneCNomenclature('', 'Сверление отверстий в профиле', 15, 'шт'), 12),
+        (OneCNomenclature('', 'Упаковка профиля', 60, 'шт'), 1),
+    ]
+
     story = [
         t1 := Table(  # header
             data=[[
@@ -346,7 +377,7 @@ def create_customer_doc(order: Order):
             style=TableStyle([('VALIGN', (0, 0), (-1, -1), 'TOP'), ])
         ),
         p2 := Paragraph(f'Заказ-наряд покупателя №{order.visible_number}', h_c_style),
-        t3 := Table(  # header
+        Table(  # header
             data=[[p3 := Paragraph(
                 f"Дата создания: {order.create_date.strftime('%d.%m.%Y')}<br/>"
                 f"Покупатель: {order.customer.name}<br/>"
@@ -360,18 +391,53 @@ def create_customer_doc(order: Order):
         ),
         Table(
             data=[
-                [P(text, p_c_bold_style) for text in ('№', 'Профиль', 'Ед.', 'Цена', 'Кол-во', 'Стоимость')],
+                [P(text, p_c_bold_style) for text in ('№', 'Материалы', 'Ед.', 'Цена', 'Кол-во', 'Стоимость')],
+                *(
+                    [P(t, p) for t in (
+                        str(i + 1), m.name, m.unit, num_to_str(m.price), num_to_str(count), num_to_str(m.price * count)
+                    )]
+                    for i, (m, count) in enumerate(materials)
+                ),
+                [P('Общая стоимость:', p_r_style), '', '', '', '',
+                 P(num_to_str(m_total := sum(m.price * count for m, count in materials)), p)],
             ],
-            style=[('GRID', (0, 0), (-1, -1), 0, colors.black)],
+            style=[
+                ('GRID', (0, 0), (-1, -1), 0, colors.black),
+                ('BACKGROUND', (0, 0), (-1, 0), colors.Color(233 / 255, 233 / 255, 233 / 255)),
+                ('SPAN', (0, -1), (-2, -1)),
+            ],
 
-            colWidths=col_width(.05, .44, .09, .13, .12, .17),
+            colWidths=col_width(.05, .44, .1, .11, .12, .17),
             spaceAfter=data.SPACE_AFTER,
-        )
+        ),
+        Table(
+            data=[
+                [P(text, p_c_bold_style) for text in ('№', 'Услуги', 'Ед.', 'Цена', 'Кол-во', 'Стоимость')],
+                *(
+                    [P(t, p) for t in (
+                        str(i + 1), m.name, m.unit, num_to_str(m.price), num_to_str(count), num_to_str(m.price * count)
+                    )]
+                    for i, (m, count) in enumerate(services)
+                ),
+                [P('Общая стоимость:', p_r_style), '', '', '', '',
+                 P(num_to_str(s_total := sum(m.price * count for m, count in services)), p)],
+            ],
+            style=[
+                ('GRID', (0, 0), (-1, -1), 0, colors.black),
+                ('BACKGROUND', (0, 0), (-1, 0), colors.Color(233 / 255, 233 / 255, 233 / 255)),
+                ('SPAN', (0, -1), (-2, -1)),
+            ],
+            colWidths=col_width(.05, .44, .1, .11, .12, .17),
+            spaceAfter=data.SPACE_AFTER,
+        ),
+        Table(  # header
+            data=[[P(f"Сумма заказа: {num_to_str(m_total + s_total)}", h_r_style)]],
+            spaceAfter=data.SPACE_AFTER
+        ),
     ]
 
     copy = story.copy()
     pdf.build(story)
-    print(A4[0], p3.width)
     # noinspection PyTypeChecker
     pdf.build(copy, canvasmaker=lambda *_, **__: draw_scheme(
         filename=pdf_path,

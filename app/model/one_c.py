@@ -3,14 +3,15 @@ import dataclasses
 
 @dataclasses.dataclass
 class OneCNomenclature:
-    id: int
+    id: str
     name: str
     price: float
+    unit: str
 
 
 @dataclasses.dataclass
 class OneCClient:
-    id: int
+    id: str
     name: str
 
 
