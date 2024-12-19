@@ -22,8 +22,9 @@ class OrderData(Database.Base):
     overlap_count: Column[SMALLINT] = Column(SMALLINT, nullable=True)
     is_need_shlegel: Column[Boolean] = Column(Boolean, nullable=False, default=True)
     is_2_line: Column[Boolean] = Column(Boolean, nullable=True)
-    quide_decor: Column[SMALLINT] = Column(SMALLINT, nullable=False)
+    quide_decor: Column[SMALLINT] = Column(SMALLINT, nullable=True)
     additional_materials: Column[String] = Column(String, nullable=False, default="")
+    price: Column[int] = Column(Integer, default=0)
 
     delivery_config_id: Column[Integer] = Column(Integer, ForeignKey("delivery_config.id"), default=1)
     color_id: Column[Integer] = Column(Integer, ForeignKey("color.id"), default=1)

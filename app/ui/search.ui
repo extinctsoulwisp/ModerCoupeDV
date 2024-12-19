@@ -225,6 +225,9 @@ color: black;
        <property name="showGrid">
         <bool>true</bool>
        </property>
+       <property name="columnCount">
+        <number>9</number>
+       </property>
        <attribute name="horizontalHeaderCascadingSectionResizes">
         <bool>false</bool>
        </attribute>
@@ -259,6 +262,10 @@ color: black;
          <string>Описание</string>
         </property>
        </column>
+       <column/>
+       <column/>
+       <column/>
+       <column/>
       </widget>
      </item>
     </layout>

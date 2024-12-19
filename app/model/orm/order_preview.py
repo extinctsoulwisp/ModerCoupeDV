@@ -5,7 +5,7 @@ from app.model.orm import Database
 
 
 class OrderPreview(Database.Base):
-    __tablename__ = 'order_preview'
+    __tablename__ = 'order_preview_new'
 
     id: Mapped = Column(Integer, primary_key=True)
     date = Column(Date)
@@ -13,3 +13,7 @@ class OrderPreview(Database.Base):
     number = Column(String)
     profile = Column(String)
     description = Column(String)
+    price = Column(Integer)
+    door_count = Column(Integer)
+    system_ = Column(String)
+    color = Column(String)

@@ -101,7 +101,7 @@ class DoorFragment:
 
     @property
     def is_have_sealant(self):
-        return self._model.material.is_have_sealant if self._model.material else False
+        return self._model.sealant_
 
     @property
     def material_name(self):

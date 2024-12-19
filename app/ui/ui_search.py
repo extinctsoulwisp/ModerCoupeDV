@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'searchLIhhRt.ui'
+## Form generated from reading UI file 'searchduvNKl.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.6.0
 ##
@@ -166,8 +166,8 @@ class Ui_SearchTab(object):
         self.verticalLayout.addWidget(self.top_widget)
 
         self.table = QTableWidget(SearchTab)
-        if (self.table.columnCount() < 5):
-            self.table.setColumnCount(5)
+        if (self.table.columnCount() < 9):
+            self.table.setColumnCount(9)
         __qtablewidgetitem = QTableWidgetItem()
         self.table.setHorizontalHeaderItem(0, __qtablewidgetitem)
         __qtablewidgetitem1 = QTableWidgetItem()
@@ -182,6 +182,7 @@ class Ui_SearchTab(object):
         self.table.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.table.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.table.setShowGrid(True)
+        self.table.setColumnCount(9)
         self.table.horizontalHeader().setCascadingSectionResizes(False)
         self.table.horizontalHeader().setStretchLastSection(True)
         self.table.verticalHeader().setVisible(False)
