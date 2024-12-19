@@ -12,6 +12,7 @@ class DoorFragmentData(Database.Base):
     y: Column[SMALLINT] = Column(SMALLINT, nullable=False)
     x2: Column[SMALLINT] = Column(SMALLINT, nullable=False)
     y2: Column[SMALLINT] = Column(SMALLINT, nullable=False)
+    sealant_: Column[bool] = Column(Boolean, default=False)
 
     material_id: Column[Integer] = Column(Integer, ForeignKey("material.id"), nullable=True)
     fragment_container_id: Column[Integer] = Column(Integer, ForeignKey("door_fragment.id"), nullable=True)

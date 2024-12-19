@@ -1,6 +1,6 @@
 from .database import Database
 
-from .one_c_data import ProfileColorModel, RigelColorModel, RigelColor1cModel
+from .one_c_data import *
 
 from .color_data import ColorData
 from .custom_col_size import CustomColSize

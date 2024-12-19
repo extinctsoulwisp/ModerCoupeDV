@@ -2,15 +2,14 @@ from app.ui.ui_search_dialog import Ui_Dialog
 from . import SearchDialog
 from .. import confirm_decorator
 from ..list_items import SearchListItem
-from ...model import App, Color
 from ...model.orm import Database, ColorData
 
 
 class ColorSearchDialog(SearchDialog):
-    def __init__(self, app: App):
+    def __init__(self, app):
         super().__init__(app)
         self._ui: Ui_Dialog = Ui_Dialog()
-        self._app: App = app
+        self._app = app
 
         self._ui.setupUi(self._dialog)
         self._connect_triggers()
@@ -38,5 +37,6 @@ class ColorSearchDialog(SearchDialog):
     @confirm_decorator("Уверены, что хотите внести новый цвет?")
     def _add_to_db(self):
         color_name = self._ui.inp_search.text()
+        from app.model import Color
         Color.add_to_db(color_name)
         self._update_list()

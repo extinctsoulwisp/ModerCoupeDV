@@ -6,31 +6,33 @@ from PySide6.QtCore import QDate
 from PySide6.QtGui import QRegularExpressionValidator
 from PySide6.QtWidgets import QDialog, QMenu, QListView
 
-from app.model import Order, App, Material, DoorFragment
 from app.ui import Ui_NewOrderTab
 from . import Tab
 from app import Error
-from .. import error_box, confirm_decorator, response_decorator, confirm_box
-from ..dialogs import DoorDialog, ProfileSearchDialog, CustomerSearchDialog, RigelSearchDialog, MaterialSearchDialog
+from .. import error_box, confirm_decorator, response_decorator, confirm_box, info_box
+from ..dialogs import DoorDialog, ProfileSearchDialog, CustomerSearchDialog, RigelSearchDialog, MaterialSearchDialog, \
+    OneCSearchDialog
 from ..dialogs.color_search_dialog import ColorSearchDialog
 from ..door_controller import DoorController
 from ...model.func import round_size
-from ...model.orm import MaterialData, DoorFragmentData
+from ...model.orm import MaterialData, DoorFragmentData, NomenclatureType
 
 guide_count_state = [True, False, None]
 
 
 class OrderTab(Tab):
-    def __init__(self, app: App, ui_app, order: Order):
+    def __init__(self, app, ui_app, order):
         from .. import DoorFragmentController
         super().__init__("icons/document.svg", "Форм", app, ui_app, order.id)
         self._ui: Ui_NewOrderTab = Ui_NewOrderTab()
         self._ui.setupUi(self._widget)
+        from app.model import Order
         self._order: Order = order
         self._doors: List[DoorController] = []
         for door in self._order.doors: self._add_door_controller(door)
 
         self._selected_door_fragment: DoorFragmentController or None = None
+        from app.model import Material
         self._selected_material: Material = Material(MaterialData())
         self._rigel_is_not_changed = True
 
@@ -56,7 +58,7 @@ class OrderTab(Tab):
         self._ui.btn_profile.clicked.connect(self._choice_profile)
         self._ui.btn_rigel.clicked.connect(self._choice_rigel)
         self._ui.btn_update.clicked.connect(self._update_scheme)
-        self._ui.r_material.clicked.connect(self._choice_material)
+        self._ui.r_material.clicked.connect(self._choice_nomenklature)
         self._ui.btn_color.clicked.connect(self._choice_color)
         self._ui.btn_document.clicked.connect(self._create_pdf)
         self._ui.inp_quide_long.setValidator(QRegularExpressionValidator(r"[0-9]+"))
@@ -69,7 +71,7 @@ class OrderTab(Tab):
         self._ui.c_delivery_config.setView(QListView())
         self._ui.c_pack_config.setView(QListView())
 
-        self._ui.btn_menu.clicked.connect(self.change_menu)
+        self._ui.btn_clone.clicked.connect(self.clone_order)
 
     def _update_model(self):
         self._order.doorway_height = self._ui.inp_height.value()
@@ -176,6 +178,7 @@ class OrderTab(Tab):
                 for i in range(door_dialog.rows_count):
                     for j in range(door_dialog.cols_count):
                         if door_model.fragment_at(i, j) is None:
+                            from app.model import DoorFragment
                             door_model.fragments.append(DoorFragment(
                                 DoorFragmentData(x=j, y=i, x2=j, y2=i),
                                 rigel=self._order.rigel,
@@ -249,6 +252,16 @@ class OrderTab(Tab):
             self._update_model()
             self._update_view()
 
+    def _choice_nomenklature(self):
+        material_dialog = OneCSearchDialog(self._app, saved_as="materials")
+
+        if material_dialog.exec() == QDialog.DialogCode.Accepted:
+            pass
+
+            self._ui.r_material.setText(self._selected_material.name)
+            self._update_model()
+            self._update_view()
+
     def _update_view(self):
         self._ui.inp_height.setValue(self._order.doorway_height)
         self._ui.inp_width.setValue(self._order.doorway_width)
@@ -291,6 +304,7 @@ class OrderTab(Tab):
     def _update_scheme(self):
         self._update_model()
         self._order.update()
+        self.update_nomenclatures()
         scale = self._ui.scrollArea.height() / self._order.doorway_height * 0.8
 
         for door_controller in self._doors:
@@ -309,6 +323,7 @@ class OrderTab(Tab):
                 fragment_controller.widget.setFixedWidth(fragment_controller.door_fragment.width * scale)
                 fragment_controller.update()
         self._ui.doors_height.setText(str(round_size(self._order.doorway_height - self._order.profile.guide)))
+
 
     def _door_by_fragment(self, door_fragment_controller) -> DoorController:
         for door in self._doors:
@@ -441,3 +456,23 @@ class OrderTab(Tab):
             subprocess.call(['start', '', self._order.create_assigment_doc(document, scheme)], shell=True)
         except Exception as e:
             error_box(str(e))
+
+    @confirm_decorator('Для создания копии необходимо сохранить заказ.\nПодтвердить?')
+    def clone_order(self):
+        self._ui_app.add_tab(tab := OrderTab(self._app, self._ui_app, self._order.clone()))
+        self._ui_app.open_tab(tab)
+
+    def update_nomenclatures(self):
+        self._ui.in_1c_top_guide.setValue(self._order.find_nomenclatures_by_type(NomenclatureType.top_guide)[0].count)
+        self._ui.in_1c_bot_guide.setValue(self._order.find_nomenclatures_by_type(NomenclatureType.bot_guide)[0].count)
+        self._ui.in_1c_top_movable.setValue(self._order.find_nomenclatures_by_type(NomenclatureType.top_movable_guide)[0].count)
+        self._ui.in_1c_decor.setValue(self._order.find_nomenclatures_by_type(NomenclatureType.guide_decor)[0].count)
+        self._ui.in_1c_plug.setValue(self._order.find_nomenclatures_by_type(NomenclatureType.plug)[0].count)
+        self._ui.in_1c_top_profile.setValue(self._order.find_nomenclatures_by_type(NomenclatureType.top_profile)[0].count)
+        self._ui.in_1c_bot_profile.setValue(self._order.find_nomenclatures_by_type(NomenclatureType.bot_profile)[0].count)
+        self._ui.in_1c_rigel.setValue(self._order.find_nomenclatures_by_type(NomenclatureType.rigel)[0].count)
+        self._ui.in_1c_vertical.setValue(self._order.find_nomenclatures_by_type(NomenclatureType.vertical_profile)[0].count)
+        self._ui.in_1c_sealant.setValue(self._order.find_nomenclatures_by_type(NomenclatureType.sealant)[0].count)
+        self._ui.in_1c_rollers.setValue(self._order.find_nomenclatures_by_type(NomenclatureType.rollers)[0].count)
+        self._ui.in_1c_shlegel.setValue(self._order.find_nomenclatures_by_type(NomenclatureType.shlegel)[0].count)
+

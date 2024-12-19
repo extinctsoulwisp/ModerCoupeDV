@@ -3,14 +3,13 @@ from typing import List
 
 from PySide6.QtWidgets import QApplication, QMainWindow
 
-from app.model import App
 from app.ui import Ui_MainWindow
 from . import clear_layout, confirm_decorator
 from .tabs import Tab, SearchTab
 
 
 class AppController:
-    def __init__(self, app: App, ui_app: QApplication):
+    def __init__(self, app, ui_app: QApplication):
         self._app = app
         self._ui_app = ui_app
         self._window = QMainWindow()

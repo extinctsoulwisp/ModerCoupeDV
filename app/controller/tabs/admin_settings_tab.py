@@ -3,14 +3,11 @@ from PySide6.QtWidgets import QLabel, QLineEdit, QFormLayout
 from app import config
 from app.controller import input_box, response_decorator
 from app.controller.tabs import Tab
-from app.model import AdminApp
 from app.ui.ui_admin_settings import Ui_settings_tab
 
 
 class AdminSettingsTab(Tab):
-    _app: AdminApp
-
-    def __init__(self, app: AdminApp, ui_app):
+    def __init__(self, app, ui_app):
         super().__init__("icons/settings.svg", "Настройки", app, ui_app, -2)
         self._ui = Ui_settings_tab()
         self._settings_dict = {}

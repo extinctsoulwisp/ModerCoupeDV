@@ -7,7 +7,6 @@ from app.controller.list_items import SearchListItem, InstanceListItem
 from app.controller.sql_table_controller import SQLTableController, NumSqlTableItem, StrSqlTableItem, BoolSqlTableItem, \
     NoEditTableItem, OneCSqlTableItem, SqlTableItem
 from app.controller.tabs import Tab
-from app.model import AdminApp
 from app.model.orm import UserData, ProfileData, RigelData, MaterialData, Database, ColorData, CustomerModel, \
     RigelColorModel, RigelColor1cModel, ProfileColorModel
 from app.model.orm.one_c_data import ProfileColor1cModel, Customer1cData, Nomenclature1cData, Config1cData
@@ -15,9 +14,8 @@ from app.ui import Ui_TablesTabNew
 
 
 class DataTab(Tab):
-    _app: AdminApp
 
-    def __init__(self, app: AdminApp, ui_app):
+    def __init__(self, app, ui_app):
         super().__init__("icons/edit.svg", "Данные", app, ui_app, -1)
 
         self._ui = Ui_TablesTabNew()

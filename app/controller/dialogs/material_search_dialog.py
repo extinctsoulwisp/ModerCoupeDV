@@ -5,15 +5,14 @@ from . import SearchDialog
 from .. import confirm_box
 from ..list_items import SearchListItem
 from ..list_items.material_list_item import MaterialListItem
-from ...model import App, Material
 from ...model.orm import Database, MaterialData
 
 
 class MaterialSearchDialog(SearchDialog):
-    def __init__(self, app: App):
+    def __init__(self, app):
         super().__init__(app)
         self._ui: Ui_Dialog = Ui_Dialog()
-        self._app: App = app
+        self._app = app
 
         self._setup()
 
@@ -36,6 +35,7 @@ class MaterialSearchDialog(SearchDialog):
         if confirm_box(
                 f'Внести в базу материал "{material_name}" {"с уплотнителем" if need_sealant else "без уплотнителя"}?'
         ):
+            from app.model import Material
             Material.add_to_db(material_name, need_sealant)
             self._update_list()
 

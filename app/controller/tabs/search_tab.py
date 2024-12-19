@@ -1,6 +1,5 @@
 from PySide6.QtWidgets import QTableWidgetItem
 
-from app.model import App
 from app.ui import Ui_SearchTab
 from . import Tab, OrderTab
 from ..list_items import OrderTableItem
@@ -8,7 +7,7 @@ from ...model.orm.order_preview import OrderPreview
 
 
 class SearchTab(Tab):
-    def __init__(self, app: App, ui_app):
+    def __init__(self, app, ui_app):
         super().__init__("icons/search.svg", "Поиск", app, ui_app, 0)
         self._ui: Ui_SearchTab = Ui_SearchTab()
 

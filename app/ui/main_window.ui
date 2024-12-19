@@ -19,7 +19,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">#left_widget {
-	background-color: rgb(39, 50, 56);
+	background-color: #20272a;
 }
 
 #central_widget {

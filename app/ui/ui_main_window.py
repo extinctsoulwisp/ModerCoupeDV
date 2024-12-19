@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'main_windowJefmWb.ui'
+## Form generated from reading UI file 'main_windowlNvZWn.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.6.0
 ##
@@ -28,7 +28,7 @@ class Ui_MainWindow(object):
         icon.addFile(u"icons/logo.svg", QSize(), QIcon.Normal, QIcon.Off)
         MainWindow.setWindowIcon(icon)
         MainWindow.setStyleSheet(u"#left_widget {\n"
-"	background-color: rgb(39, 50, 56);\n"
+"	background-color: #20272a;\n"
 "}\n"
 "\n"
 "#central_widget {\n"

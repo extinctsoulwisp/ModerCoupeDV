@@ -3,11 +3,10 @@ from PySide6.QtGui import QRegularExpressionValidator
 
 from app.ui import Ui_door_edit_dialog
 from . import Dialog
-from ...model import Door
 
 
 class DoorDialog(Dialog):
-    def __init__(self, door: Door = None):
+    def __init__(self, door=None):
         super().__init__()
         self._ui: Ui_door_edit_dialog = Ui_door_edit_dialog()
         self._door = door

@@ -2,7 +2,7 @@
 
 from sqlalchemy.orm import declarative_base
 
-from app.model import EncryptData, App
+from . import App
 from app import Error
 from app.model.orm import Database, UserData
 
@@ -14,6 +14,7 @@ class AdminApp(App):
 
     def login(self, password: bytes, user_password: bytes):
         try:
+            from app.model import EncryptData
             password = EncryptData.admin_postgres_password(password)
             Database.init(password, is_user=False)
         except:
@@ -27,18 +28,22 @@ class AdminApp(App):
     @staticmethod
     def change_user_app_password(old_password: str, new_password: str):
 
+        from app.model import EncryptData
         EncryptData.change_user_password(old_password.encode(), new_password.encode())
 
     @staticmethod
     def change_user_db_password(manager_password: str, new_password: str):
+        from app.model import EncryptData
         EncryptData.change_user_postgres_password(manager_password.encode(), new_password.encode())
 
     @staticmethod
     def change_admin_app_password(old_password: str, new_password: str):
+        from app.model import EncryptData
         EncryptData.change_admin_password(old_password.encode(), new_password.encode())
 
     @staticmethod
     def change_admin_db_password(old_password: str, new_password: str):
+        from app.model import EncryptData
         EncryptData.change_admin_postgres_password(old_password.encode(), new_password.encode())
 
     @staticmethod

@@ -6,3 +6,4 @@ from .login_dialog import LoginDialog
 from .material_search_dialog import MaterialSearchDialog
 from .profile_search_dialog import ProfileSearchDialog
 from .rigel_search_dialog import RigelSearchDialog
+from .onec_search_dialog import OneCSearchDialog

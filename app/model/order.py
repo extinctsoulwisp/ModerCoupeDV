@@ -4,7 +4,8 @@ from app.model import Color
 from app.model.customer import Customer
 from app.model.door import Door
 from app.model.orm import OrderData, Database, DoorData, DoorFragmentData, MaterialData, CustomColSize, CustomRowSize, \
-    OrderNumberPartData, DeliveryConfigData, SetConfigData, PackConfigData
+    OrderNumberPartData, DeliveryConfigData, SetConfigData, PackConfigData, NomenclatureType, OrderNomenclatures1cData, \
+    ProfileColor1cModel, RigelColor1cModel
 from app.model.profile import Profile
 from app.model.rigel import Rigel
 
@@ -196,6 +197,7 @@ class Order:
             door.update()
 
         self.group_fragments()
+        self.update_nomenclatures()
 
     def group_fragments(self):
         group_fragments = {}
@@ -356,3 +358,301 @@ class Order:
     @quide_decor.setter
     def quide_decor(self, value):
         self._model.quide_decor = value
+
+    def clone(self) -> 'Order':
+        self.save_in_db()
+
+        cloned_order_data = OrderData(
+            doorway_height=self._model.doorway_height,
+            doorway_width=self._model.doorway_width,
+            guide_long=self._model.guide_long,
+            create_date=self._model.create_date,
+            out_date=self._model.out_date,
+            number=self._model.number,
+            description=self._model.description,
+            overlap_count=self._model.overlap_count,
+            is_need_shlegel=self._model.is_need_shlegel,
+            is_2_line=self._model.is_2_line,
+            quide_decor=self._model.quide_decor,
+            additional_materials=self._model.additional_materials,
+            delivery_config_id=self._model.delivery_config_id,
+            pack_config_id=self._model.pack_config_id,
+            set_config_id=self._model.set_config_id,
+            color=self._model.color,
+            profile=self._model.profile,
+            customer=self._model.customer,
+            rigel=self._model.rigel,
+            responsible=self._model.responsible,
+        )
+
+        if self._model.part_number:
+            cloned_order_data.part_number.append(OrderNumberPartData(number=self._model.part_number[0].number))
+
+        for door in self._model.doors:
+            cloned_order_data.doors.append(cloned_door := DoorData(
+                cols_count=door.cols_count,
+                rows_count=door.rows_count,
+                number=door.number,
+                custom_width=door.custom_width,
+                is_h_main_rigel=door.is_h_main_rigel
+            ))
+
+            for custom_col in door.custom_cols:
+                cloned_door.custom_cols.append(CustomColSize(n=custom_col.n, size=custom_col.size))
+
+            for custom_row in door.custom_rows:
+                cloned_door.custom_rows.append(CustomRowSize(n=custom_row.n, size=custom_row.size))
+
+            for fragment in door.fragments:
+                cloned_door.fragments.append(DoorFragmentData(
+                    x=fragment.x,
+                    y=fragment.y,
+                    x2=fragment.x2,
+                    y2=fragment.y2,
+                    material_id=fragment.material_id,
+                    fragment_container_id=fragment.fragment_container_id,
+                ))
+
+        with Database.Session() as session:
+            session.add(cloned_order_data)
+            session.commit()
+            session.refresh(cloned_order_data)
+
+            return Order(cloned_order_data)
+
+    def find_nomenclatures_by_type(self, nomenclature_type: NomenclatureType):
+        return [n for n in self._model.nomenclatures if n.type == nomenclature_type.value]
+
+    # noinspection PyTypeChecker
+    def update_nomenclatures(self):
+        def find_nomenclature_by_type(nomenclature_type: NomenclatureType):
+            n = self.find_nomenclatures_by_type(nomenclature_type)
+            return n[0] if len(n) else None
+
+        with Database.Session() as session:
+            if (profile_nomenclatures := (
+                    session.query(ProfileColor1cModel)
+                            .filter(
+                        ProfileColor1cModel.profile_id == self._profile.id,
+                        ProfileColor1cModel.color_id == self._color.id
+                    )
+                            .first()
+            )) is None:
+                profile_nomenclatures: ProfileColor1cModel = ProfileColor1cModel()
+            if (rigel_nomenclature := (
+                    session.query(RigelColor1cModel)
+                            .filter(
+                        RigelColor1cModel.rigel_id == self._rigel.id,
+                        RigelColor1cModel.rigel_id == self._color.id
+                    )
+                            .first()
+            )) is None:
+                rigel_nomenclature: RigelColor1cModel = RigelColor1cModel()
+
+            # top guide
+
+            if not (nomenclature := find_nomenclature_by_type(NomenclatureType.top_guide)):
+                self._model.nomenclatures.append(nomenclature :=
+                                                 OrderNomenclatures1cData(type=NomenclatureType.top_guide.value,
+                                                                          is_auto_nomenclature_id=True)
+                                                 )
+            if nomenclature.is_auto_nomenclature_id:
+                if self._model.is_2_line and profile_nomenclatures.bottom_guide_2 is not None:
+                    nomenclature.nomenclature_id = profile_nomenclatures.top_guide_2.id
+                    nomenclature.price = profile_nomenclatures.top_guide_2.price
+                    nomenclature.unit = profile_nomenclatures.top_guide_2.unit
+                elif self._model.is_2_line == False and profile_nomenclatures.bottom_guide_1 is not None:
+                    nomenclature.nomenclature_id = profile_nomenclatures.top_guide_1.id
+                    nomenclature.price = profile_nomenclatures.top_guide_1.price
+                    nomenclature.unit = profile_nomenclatures.top_guide_1.unit
+
+            nomenclature.count = round(
+                (self._model.guide_long if self._model.guide_long else self._model.doorway_width) / 1000, 1
+            ) if self._model.is_2_line is not None else 0
+
+            # bottom guide
+
+            if not (nomenclature := find_nomenclature_by_type(NomenclatureType.bot_guide)):
+                self._model.nomenclatures.append(nomenclature :=
+                                                 OrderNomenclatures1cData(type=NomenclatureType.bot_guide.value,
+                                                                          is_auto_nomenclature_id=True)
+                                                 )
+            if nomenclature.is_auto_nomenclature_id:
+                if self._model.is_2_line and profile_nomenclatures.bottom_guide_2 is not None:
+                    nomenclature.nomenclature_id = profile_nomenclatures.bottom_guide_2.id
+                    nomenclature.price = profile_nomenclatures.bottom_guide_2.price
+                    nomenclature.unit = profile_nomenclatures.bottom_guide_2.unit
+                elif self._model.is_2_line == False and profile_nomenclatures.bottom_guide_1 is not None:
+                    nomenclature.nomenclature_id = profile_nomenclatures.bottom_guide_1.id
+                    nomenclature.price = profile_nomenclatures.bottom_guide_1.price
+                    nomenclature.unit = profile_nomenclatures.bottom_guide_1.unit
+
+            nomenclature.count = round(
+                (self._model.guide_long if self._model.guide_long else self._model.doorway_width) / 1000, 1
+            ) if self._model.is_2_line is not None else 0
+
+            # top movable guide
+
+            if not (nomenclature := find_nomenclature_by_type(NomenclatureType.top_movable_guide)):
+                self._model.nomenclatures.append(nomenclature :=
+                                                 OrderNomenclatures1cData(type=NomenclatureType.top_movable_guide.value,
+                                                                          is_auto_nomenclature_id=True)
+                                                 )
+            if nomenclature.is_auto_nomenclature_id and profile_nomenclatures.top_movable_guide is not None:
+                nomenclature.nomenclature_id = profile_nomenclatures.top_movable_guide.id
+                nomenclature.price = profile_nomenclatures.top_movable_guide.price
+                nomenclature.unit = profile_nomenclatures.top_movable_guide.unit
+
+            if self._model.is_2_line is not None:
+                nomenclature.count = 6
+                guide = self._model.guide_long if self._model.guide_long else self._model.doorway_width
+
+                if self._model.is_2_line and guide > 3000:
+                    nomenclature.count += 6
+            else:
+                nomenclature.count = 0
+
+            # guide decor
+
+            if not (nomenclature := find_nomenclature_by_type(NomenclatureType.guide_decor)):
+                self._model.nomenclatures.append(nomenclature :=
+                                                 OrderNomenclatures1cData(type=NomenclatureType.guide_decor.value,
+                                                                          is_auto_nomenclature_id=True)
+                                                 )
+            if nomenclature.is_auto_nomenclature_id and profile_nomenclatures.decorative_guide is not None:
+                nomenclature.nomenclature_id = profile_nomenclatures.decorative_guide.id
+                nomenclature.price = profile_nomenclatures.decorative_guide.price
+                nomenclature.unit = profile_nomenclatures.decorative_guide.unit
+
+            nomenclature.count = 6 * self._model.quide_decor if self._model.quide_decor is not None else 0
+
+            # plugs
+
+            if not (nomenclature := find_nomenclature_by_type(NomenclatureType.plug)):
+                self._model.nomenclatures.append(nomenclature :=
+                                                 OrderNomenclatures1cData(type=NomenclatureType.plug.value,
+                                                                          is_auto_nomenclature_id=True)
+                                                 )
+            if nomenclature.is_auto_nomenclature_id and profile_nomenclatures.plug is not None:
+                nomenclature.nomenclature_id = profile_nomenclatures.plug.id
+                nomenclature.price = profile_nomenclatures.plug.price
+                nomenclature.unit = profile_nomenclatures.plug.unit
+
+            nomenclature.count = 0
+
+            # top profile
+
+            if not (nomenclature := find_nomenclature_by_type(NomenclatureType.top_profile)):
+                self._model.nomenclatures.append(nomenclature :=
+                                                 OrderNomenclatures1cData(type=NomenclatureType.top_profile.value,
+                                                                          is_auto_nomenclature_id=True)
+                                                 )
+            if nomenclature.is_auto_nomenclature_id and profile_nomenclatures.top_horizontal is not None:
+                nomenclature.nomenclature_id = profile_nomenclatures.top_horizontal.id
+                nomenclature.price = profile_nomenclatures.top_horizontal.price
+                nomenclature.unit = profile_nomenclatures.top_horizontal.unit
+
+            nomenclature.count = round(sum(door.width - self.profile.v_width * 2 for door in self.doors) / 1000, 1)
+
+            # bot profile
+
+            if not (nomenclature := find_nomenclature_by_type(NomenclatureType.bot_profile)):
+                self._model.nomenclatures.append(nomenclature :=
+                                                 OrderNomenclatures1cData(type=NomenclatureType.bot_profile.value,
+                                                                          is_auto_nomenclature_id=True)
+                                                 )
+            if nomenclature.is_auto_nomenclature_id and profile_nomenclatures.bottom_horizontal is not None:
+                nomenclature.nomenclature_id = profile_nomenclatures.bottom_horizontal.id
+                nomenclature.price = profile_nomenclatures.bottom_horizontal.price
+                nomenclature.unit = profile_nomenclatures.bottom_horizontal.unit
+
+            nomenclature.count = round(sum(door.width - self.profile.v_width * 2 for door in self.doors) / 1000, 1)
+
+            # rigel
+
+            if not (nomenclature := find_nomenclature_by_type(NomenclatureType.rigel)):
+                self._model.nomenclatures.append(nomenclature :=
+                                                 OrderNomenclatures1cData(type=NomenclatureType.rigel.value,
+                                                                          is_auto_nomenclature_id=True)
+                                                 )
+            if nomenclature.is_auto_nomenclature_id and rigel_nomenclature.rigel is not None:
+                nomenclature.nomenclature_id = rigel_nomenclature.rigel.id
+                nomenclature.price = rigel_nomenclature.rigel.price
+                nomenclature.unit = rigel_nomenclature.rigel.unit
+
+            nomenclature.count = round(sum(rigel[4] for door in self.doors for rigel in door.rigels) / 1000, 1)
+
+            # vertical
+
+            if not (nomenclature := find_nomenclature_by_type(NomenclatureType.vertical_profile)):
+                self._model.nomenclatures.append(nomenclature :=
+                                                 OrderNomenclatures1cData(type=NomenclatureType.vertical_profile.value,
+                                                                          is_auto_nomenclature_id=True)
+                                                 )
+            if nomenclature.is_auto_nomenclature_id and profile_nomenclatures.vertical is not None:
+                nomenclature.nomenclature_id = profile_nomenclatures.vertical.id
+                nomenclature.price = profile_nomenclatures.vertical.price
+                nomenclature.unit = profile_nomenclatures.vertical.unit
+
+            nomenclature.count = round(sum(door.height for door in self.doors) / 1000, 1)
+
+            # sealant
+
+            if not (nomenclature := find_nomenclature_by_type(NomenclatureType.sealant)):
+                self._model.nomenclatures.append(nomenclature :=
+                                                 OrderNomenclatures1cData(type=NomenclatureType.sealant.value,
+                                                                          is_auto_nomenclature_id=True)
+                                                 )
+            if nomenclature.is_auto_nomenclature_id and profile_nomenclatures.sealant is not None:
+                nomenclature.nomenclature_id = profile_nomenclatures.sealant.id
+                nomenclature.price = profile_nomenclatures.sealant.price
+                nomenclature.unit = profile_nomenclatures.sealant.unit
+
+            if (sealant := sum(
+                (fragment.height + fragment.visible_width) * 2
+                for door in self._doors for fragment in door.fragments
+                if not fragment.fragment_container and fragment.is_have_sealant
+            )) > 0:
+                sealant = round(sealant / 1000) + 1
+
+            nomenclature.count = sealant
+
+            # rollers
+
+            if not (nomenclature := find_nomenclature_by_type(NomenclatureType.rollers)):
+                self._model.nomenclatures.append(nomenclature :=
+                                                 OrderNomenclatures1cData(type=NomenclatureType.rollers.value,
+                                                                          is_auto_nomenclature_id=True)
+                                                 )
+            if nomenclature.is_auto_nomenclature_id and profile_nomenclatures.wheels is not None:
+                nomenclature.nomenclature_id = profile_nomenclatures.wheels.id
+                nomenclature.price = profile_nomenclatures.wheels.price
+                nomenclature.unit = profile_nomenclatures.wheels.unit
+
+            nomenclature.count = self.door_count
+
+            # shlegel
+
+            if not (nomenclature := find_nomenclature_by_type(NomenclatureType.shlegel)):
+                self._model.nomenclatures.append(nomenclature :=
+                                                 OrderNomenclatures1cData(type=NomenclatureType.shlegel.value,
+                                                                          is_auto_nomenclature_id=True)
+                                                 )
+            if nomenclature.is_auto_nomenclature_id and profile_nomenclatures.shlegel is not None:
+                nomenclature.nomenclature_id = profile_nomenclatures.shlegel.id
+                nomenclature.price = profile_nomenclatures.shlegel.price
+                nomenclature.unit = profile_nomenclatures.shlegel.unit
+
+            if (shlegel := (
+                    (self.doorway_height - self.profile.guide) * self.door_count * 2 + 5
+                    if self.need_shlegel else 0
+            )) > 0:
+                shlegel = round(shlegel / 1000) + 1
+
+            nomenclature.count = shlegel
+
+            # materials
+
+            for material in self.using_materials:
+                pass
+

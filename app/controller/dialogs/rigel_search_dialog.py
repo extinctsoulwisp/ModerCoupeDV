@@ -1,14 +1,13 @@
 from app.ui.ui_search_dialog import Ui_Dialog
 from . import SearchDialog
 from ..list_items import SearchListItem
-from ...model import App
 
 
 class RigelSearchDialog(SearchDialog):
-    def __init__(self, app: App):
+    def __init__(self, app):
         super().__init__(app)
         self._ui: Ui_Dialog = Ui_Dialog()
-        self._app: App = app
+        self._app = app
 
         self._ui.setupUi(self._dialog)
         self._ui.btn_add_to_db.setVisible(False)

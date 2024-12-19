@@ -1,15 +1,14 @@
 from PySide6.QtWidgets import QWidget
 
-from app.model import Door
 from app.ui import Ui_door
 
 
 class DoorController:
-    def __init__(self, door: Door):
+    def __init__(self, door):
         from app.controller import DoorFragmentController
         self._widget: QWidget = QWidget()
         self._ui: Ui_door = Ui_door()
-        self._door: Door = door
+        self._door = door
         self._fragments = [DoorFragmentController(fragment) for fragment in door.fragments]
         self._ui.setupUi(self._widget)
 

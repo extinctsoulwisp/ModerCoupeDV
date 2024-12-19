@@ -44,3 +44,4 @@ class OrderData(Database.Base):
     doors = relationship(DoorData, lazy='joined')
     responsible = relationship(UserData, lazy='joined')
     part_number = relationship(OrderNumberPartData, lazy='joined')
+    nomenclatures = relationship('OrderNomenclatures1cData', lazy='joined', uselist=True)

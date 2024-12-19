@@ -7,12 +7,10 @@ from app.controller.tabs import OrderTab, SearchTab
 from app.controller.tabs.admin_search_tab import AdminSearchTab
 from app.controller.tabs.admin_settings_tab import AdminSettingsTab
 from app.controller.tabs.tables_tab import DataTab
-from app.model import AdminApp
 from app.model.orm import Database
 
 
 class AdminAppController(AppController):
-    _app: AdminApp
 
     def start(self, creatable=False):
         self._window.showMaximized()

@@ -1,4 +1,4 @@
-from sqlalchemy import desc, func, String
+from sqlalchemy import desc
 
 from app.errors import Error
 from .decryptor import EncryptData

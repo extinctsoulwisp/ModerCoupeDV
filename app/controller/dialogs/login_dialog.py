@@ -1,13 +1,11 @@
 import sys
 
 from app.controller.dialogs.dialog import Dialog
-from app.model import AdminApp
-from app.model.app import App
 from app.ui import Ui_LoginDialog
 
 
 class LoginDialog(Dialog):
-    def __init__(self, app: App, admin_app: AdminApp):
+    def __init__(self, app, admin_app):
         super().__init__()
         self._ui: Ui_LoginDialog = Ui_LoginDialog()
         self._app = app

@@ -1,18 +1,16 @@
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QWidget
 
-from app.model import App
-
 
 class Tab:
-    def __init__(self, icon_path: str, name: str, app: App, ui_app, _id: int):
+    def __init__(self, icon_path: str, name: str, app, ui_app, _id: int):
         from ..list_items import TabListItem
         from .. import AppController
 
         self._icon: QIcon = QIcon(icon_path)
         self._name: str = name
         self._widget: QWidget = QWidget()
-        self._app: App = app
+        self._app = app
         self._ui_app: AppController = ui_app
         self._list_item: TabListItem = TabListItem(self)
         self._id = _id
